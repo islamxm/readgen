@@ -142,6 +142,14 @@ export const EditorToolbar = () => {
         </TooltipTrigger>
         <TooltipContent side={"right"}>Create blockquote</TooltipContent>
       </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant={"secondary"} size={"icon"} onClick={addCode}>
+            <Code2 />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Create code block</TooltipContent>
+      </Tooltip>
       {/* <DropdownMenu>
         <DropdownMenuTrigger>
           <Button variant={"secondary"} size={"icon"}>
@@ -174,14 +182,7 @@ export const EditorToolbar = () => {
         </TooltipTrigger>
         <TooltipContent side={"right"}>Create thematic break</TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger>
-          <Button variant={"secondary"} size={"icon"} onClick={addCode}>
-            <Code2 />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side={"right"}>Create code block</TooltipContent>
-      </Tooltip> */}
+       */}
     </div>
   );
 };

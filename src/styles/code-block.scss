@@ -1,14 +1,15 @@
 .code-block {
-  .code-block-header {
-  }
+
   .code-block-body {
     background-color: transparent !important;
 
     .code-block-editor {
       font-size: 16px;
       background-color: transparent !important;
+      
       pre {
         background-color: transparent !important;
+        padding: 0 !important;
       }
     }
   }

@@ -136,6 +136,7 @@ export function useEditor<T extends HTMLElement>(
       switch (e.code) {
         case "Tab":
           e.preventDefault();
+          onBlur();
           prevBlock();
           break;
       }
@@ -143,7 +144,8 @@ export function useEditor<T extends HTMLElement>(
     }
     if (e.code === "Tab") {
       e.preventDefault();
-      onSave();
+      // onSave();
+      onBlur()
       nextBlock();
       return;
     }

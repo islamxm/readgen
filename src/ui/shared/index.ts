@@ -8,7 +8,6 @@ export {
   TooltipTrigger,
   TooltipContent,
 } from "./tooltip";
-export { Select } from "./select";
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -47,3 +46,16 @@ export {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "./context-menu";
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+export { Toaster } from "./sonner";
