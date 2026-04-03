@@ -1,10 +1,13 @@
-import { useDocument } from "@/hooks";
+import { useDocument, useNode } from "@/hooks";
 import type { MOMBlockNodeType } from "@/mom/types";
 import { getBlockColors } from "../tokens";
 import { motion } from "motion/react";
 
-const Block = ({ type }: { type: MOMBlockNodeType }) => {
-  const { text, border } = getBlockColors(type);
+//потом можно сделать так чтобы имел высоту в зависимости от контента чтобы визуально можно было понять размер блока
+const Block = ({ nodeId }: { nodeId: string }) => {
+  const node = useNode(nodeId);
+  const { text, border } = getBlockColors(node.type as MOMBlockNodeType);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -17,13 +20,13 @@ const Block = ({ type }: { type: MOMBlockNodeType }) => {
         color: text,
       }}
     >
-      {type}
+      {node.type}
     </motion.div>
   );
 };
 
 export const CanvasMap = () => {
-  const { nodes, rootOrder } = useDocument();
+  const { rootOrder } = useDocument();
 
   return (
     <motion.div
@@ -31,9 +34,7 @@ export const CanvasMap = () => {
       className="flex flex-col gap-1 rounded-lg border h-full p-3 bg-white w-[250px]"
     >
       {rootOrder.length > 0 ? (
-        rootOrder.map((nodeId) => (
-          <Block key={nodeId} type={nodes[nodeId].type as MOMBlockNodeType} />
-        ))
+        rootOrder.map((nodeId) => <Block key={nodeId} nodeId={nodeId} />)
       ) : (
         <>
           <motion.div

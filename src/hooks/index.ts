@@ -1,4 +1,5 @@
 export { useDocument } from "./useDocument";
+import { useDocumentActions } from "./useDocumentActions";
 export { useHistory } from "./useHistory";
 export { useSelection } from "./useSelection";
 export { useNode } from "./useNode";

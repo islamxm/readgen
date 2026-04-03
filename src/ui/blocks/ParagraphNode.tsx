@@ -1,15 +1,14 @@
 import { type FC } from "react";
-import { useChildren, useEditor, useNode } from "../../hooks";
+import { useEditor, useNode } from "../../hooks";
 import { MOM } from "../../mom";
 import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
 
 type Props = { nodeId: string };
 
 export const ParagraphNode: FC<Props> = ({ nodeId }) => {
-  const children = useChildren(nodeId);
-  const { ref, editorProps, applyFormat, save } =
-    useEditor<HTMLParagraphElement>(nodeId, children);
   const node = useNode(nodeId);
+  const { ref, editorProps, applyFormat, save } =
+    useEditor<HTMLParagraphElement>(node);
   const isValidNode = MOM.Guard.isParagraphNode(node);
 
   if (!isValidNode) return;
@@ -21,7 +20,7 @@ export const ParagraphNode: FC<Props> = ({ nodeId }) => {
         containerRef={ref as any}
         applyFormat={applyFormat}
       />
-      
+
       <p
         ref={ref}
         {...editorProps}

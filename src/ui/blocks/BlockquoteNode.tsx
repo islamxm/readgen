@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useChildren, useEditor, useNode } from "../../hooks";
+import { useEditor, useNode } from "../../hooks";
 import { MOM } from "../../mom";
 import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
 
@@ -7,12 +7,8 @@ type Props = {
   nodeId: string;
 };
 export const BlockquoteNode: FC<Props> = ({ nodeId }) => {
-  const children = useChildren(nodeId);
-  const { editorProps, ref, applyFormat } = useEditor<HTMLQuoteElement>(
-    nodeId,
-    children,
-  );
   const node = useNode(nodeId);
+  const { editorProps, ref, applyFormat } = useEditor<HTMLQuoteElement>(node);
   const isValidNode = MOM.Guard.isBlockquoteNode(node);
 
   if (!isValidNode) return null;

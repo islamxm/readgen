@@ -1,12 +1,15 @@
 import { useEffect, useRef, type HTMLProps } from "react";
 import { useSelection } from "./useSelection";
-import { useNode } from "./useNode";
-import { useDocument } from "./useDocument";
 import { MOM } from "../mom";
 import type { MOMAllContent, MOMTextMarks } from "../mom/types";
 import { useHistory } from "./useHistory";
 import { nanoid } from "nanoid";
 import { useCursor } from "./useCursor";
+import { useDocumentActions } from "./useDocumentActions";
+import { useChildren } from "./useChildren";
+import { useSelectionActions } from "./useSelectionActions";
+import { useSelectionStatus } from "./useSelectionStatus";
+import { useNodeSelection } from "./useNodeSelection";
 
 /**
  * text - если разрешен только сырой текст (ex: h1,h2,...)
@@ -17,30 +20,26 @@ type ParseType = "deep" | "plain";
 
 /** Инкапсулирует в себя все методы и свойства для редактирования элементов, это то что будет использоваться в Block */
 export function useEditor<T extends HTMLElement>(
-  nodeId: string,
-  children: Array<MOMAllContent>,
+  node: MOMAllContent,
   parseType: ParseType = "deep",
   disableFormatting?: boolean,
 ) {
-  const node = useNode(nodeId);
+  const children = useChildren(node.id);
   const {
-    isSelected,
     removeFromSelect,
-    isFocused,
-    nextBlock,
-    prevBlock,
+    selectNextBlock,
+    selectPrevBlock,
     focuseNode,
     focusNewNode,
     blur,
-  } = useSelection();
-  const { commitInlineEdit, updateNode, removeNode, insertNode, getNode } =
-    useDocument();
+  } = useSelectionActions();
+  const { isSelected, isFocused } = useNodeSelection(node.id);
+  const { commitInlineEdit, updateNode, removeNode, insertNode } =
+    useDocumentActions();
   const { undo } = useHistory();
   const ref = useRef<T | null>(null);
   const { restoreCursor, saveCursor } = useCursor<T>(ref);
-  const selected = isSelected(nodeId);
-  const focused = isFocused(nodeId);
-  const isActive = selected && focused;
+  const isActive = isSelected && isFocused;
 
   /** для того чтобы нормально вставлять html в зависимости от измененного стейта (отбираем контрол у реакта) */
   useEffect(() => {
@@ -48,9 +47,10 @@ export function useEditor<T extends HTMLElement>(
     let html: string = "";
     // тут тоже приходится проверить так как некоторые блоки не могут в себе содержать детей кроме plainText, (пока только heading)
     if (parseType === "deep") {
-      html = MOM.Serializer.momToHTML(children, nodeId);
+      html = MOM.Serializer.momToHTML(children, node.id);
     }
     if (parseType === "plain") {
+      // undo/redo не восстанавливает в хедингах
       html = ref.current.textContent;
     }
     ref.current.innerHTML = html;
@@ -65,23 +65,23 @@ export function useEditor<T extends HTMLElement>(
    */
   useEffect(() => {
     if (!ref.current) return;
-    if (selected) {
+    if (isSelected) {
       ref.current.focus();
     }
-  }, [selected]);
+  }, [isSelected]);
 
   /** сохранение результата редактирования (данные беруться из dom) */
   const onSave = () => {
     if (!ref.current) return;
     if (parseType === "plain") {
       updateNode({
-        nodeId,
+        nodeId: node.id,
         patch: { ...node, value: ref.current.textContent },
       });
     }
     if (parseType === "deep") {
       const nodes = MOM.Parser.domToMom(ref.current);
-      commitInlineEdit({ nodeId, nodes });
+      commitInlineEdit({ nodeId: node.id, nodes });
     }
   };
 
@@ -89,7 +89,7 @@ export function useEditor<T extends HTMLElement>(
   const onBlur = () => {
     onSave();
     blur();
-    removeFromSelect(nodeId);
+    removeFromSelect(node.id);
 
     // когда окно приложение скрывается нужно вручную сделать blur() чтобы отменить каректку из contenteditable
     if (ref.current) {
@@ -99,7 +99,7 @@ export function useEditor<T extends HTMLElement>(
 
   /** фиксируем факт DOM фокуса (реакция на программный focus()) в сторе */
   const onFocus = () => {
-    focuseNode(nodeId);
+    focuseNode(node.id);
   };
 
   /** при клике на блок гарантированно фиксируем в сторе (дефолтный клик)*/
@@ -136,16 +136,15 @@ export function useEditor<T extends HTMLElement>(
         case "Tab":
           e.preventDefault();
           onBlur();
-          prevBlock();
+          selectPrevBlock();
           break;
       }
       return;
     }
     if (e.code === "Tab") {
       e.preventDefault();
-      // onSave();
       onBlur();
-      nextBlock();
+      selectNextBlock();
       return;
     }
     if (e.code === "Enter") {
@@ -155,12 +154,13 @@ export function useEditor<T extends HTMLElement>(
       return;
     }
     if (e.code === "Backspace") {
-      if (!ref.current?.textContent) {
+      const isEmpty = !ref.current?.textContent;
+      if (isEmpty) {
         console.warn(
           "Тут стирается последний символ из блока куда переходит фокус, то есть такое двойное удаление символа",
         );
-        prevBlock();
-        removeNode(nodeId);
+        selectPrevBlock();
+        removeNode(node.id);
       }
       return;
     }
@@ -170,33 +170,36 @@ export function useEditor<T extends HTMLElement>(
   const createNewBlock = () => {
     const type = node.type;
     const id = nanoid();
+
     switch (type) {
       case "paragraph":
         insertNode({
           node: { ...MOM.Engine.createParagraph(node.parentId), id },
           parentId: null,
+          afterNodeId: node.id,
         });
         break;
       case "blockquote":
         insertNode({
           node: { ...MOM.Engine.createBlockquote(node.parentId), id },
           parentId: null,
+          afterNodeId: node.id,
         });
         break;
       case "heading":
         insertNode({
           node: { ...MOM.Engine.createHeading(node.depth, node.parentId), id },
           parentId: null,
+          afterNodeId: node.id,
         });
         break;
       case "alert":
         insertNode({
           node: { ...MOM.Engine.createAlert(node.parentId, node.variant), id },
           parentId: null,
+          afterNodeId: node.id,
         });
     }
-    // selectOne(id);
-    // focuseNode(id);
     focusNewNode(id);
   };
 
@@ -216,7 +219,7 @@ export function useEditor<T extends HTMLElement>(
     );
     const result = MOM.Editor.applyFormat(format, children);
     if (!result) return;
-    commitInlineEdit({ nodeId, nodes: result.nodes });
+    commitInlineEdit({ nodeId: node.id, nodes: result.nodes });
   };
 
   /** очистка от браузерного мусора при каждом вводе */
@@ -263,7 +266,6 @@ export function useEditor<T extends HTMLElement>(
   return {
     ref,
     editorProps,
-    selected,
     applyFormat,
     save: onSave,
   };

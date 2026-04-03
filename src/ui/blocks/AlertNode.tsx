@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import { useChildren, useEditor, useNode } from "../../hooks";
+import { useEditor, useNode } from "../../hooks";
 import { MOM } from "../../mom";
 import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
 import type { MOMAlert } from "@/mom/types";
@@ -64,12 +64,8 @@ type Props = {
 };
 
 export const AlertNode: FC<Props> = ({ nodeId }) => {
-  const children = useChildren(nodeId);
-  const { editorProps, ref, applyFormat } = useEditor<HTMLDivElement>(
-    nodeId,
-    children,
-  );
   const node = useNode(nodeId);
+  const { editorProps, ref, applyFormat } = useEditor<HTMLDivElement>(node);
   const isValidNode = MOM.Guard.isAlertNode(node);
 
   if (!isValidNode) return null;

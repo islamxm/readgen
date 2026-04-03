@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { MOMAllContent, MOMDocument } from "../../mom/types";
 import { type BatchOp, type MOMOperation } from "../../mom/engine/engine.types";
 import { MOM } from "../../mom";
+import type { AppThunk } from "../config";
 
 type UndoStack = {
   past: MOMOperation[];
@@ -58,12 +59,18 @@ export const documentSlice = createSlice({
       action: PayloadAction<{
         node: MOMAllContent;
         parentId: string | null;
-        index: number;
+        afterNodeId?: string;
       }>,
     ) => {
+      const { afterNodeId, ...payload } = action.payload;
+      const index = afterNodeId
+        ? state.doc.rootOrder.indexOf(afterNodeId) + 1
+        : state.doc.rootOrder.length;
+
       const result = MOM.Engine.insertNode({
         doc: state.doc,
-        ...action.payload,
+        ...payload,
+        index,
       });
       commitResult(state, result);
     },
@@ -73,13 +80,16 @@ export const documentSlice = createSlice({
         ops: Array<{
           node: MOMAllContent;
           parentId: string | null;
-          index: number;
+          index?: number;
         }>;
       }>,
     ) => {
       const result = MOM.Engine.insertNodes({
         doc: state.doc,
-        ops: action.payload.ops,
+        ops: action.payload.ops.map((o) => ({
+          ...o,
+          index: o.index ?? state.doc.rootOrder.length,
+        })),
       });
       commitResult(state, result);
     },
@@ -225,5 +235,19 @@ export const documentSlice = createSlice({
     },
   },
 });
+
+export const addLinkThunk =
+  (url: string, linkId: string): AppThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const node = state.document.doc.nodes[linkId];
+    if (!MOM.Guard.isTextNode(node)) return;
+    dispatch(
+      documentStoreActions.updateNode({
+        nodeId: linkId,
+        patch: { ...node, url },
+      }),
+    );
+  };
 
 export const documentStoreActions = documentSlice.actions;

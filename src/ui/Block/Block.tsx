@@ -1,33 +1,29 @@
 import classes from "./classes.module.scss";
 import type { FC } from "react";
-import { useDocument, useNode, useSelection } from "../../hooks";
+import { useNode } from "../../hooks";
 import { renderer } from "../renderer";
 import clsx from "clsx";
 import { getBlockColors } from "../tokens";
 import type { MOMBlockNodeType } from "../../mom/types";
 import { motion } from "motion/react";
 import {
-  Button,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
 } from "../shared";
 import {
   BrushCleaning,
   CopyX,
-  SquareDashedMousePointer,
   SquareMousePointer,
   SquareStack,
-  SquaresUnite,
-  Trash2,
 } from "lucide-react";
 import { MOM } from "@/mom";
 import { useUI } from "@/hooks";
+import { useDocumentActions } from "@/hooks/useDocumentActions";
+import { useNodeSelection } from "@/hooks/useNodeSelection";
+import { useSelectionActions } from "@/hooks/useSelectionActions";
 
 type Props = {
   nodeId: string;
@@ -36,10 +32,10 @@ type Props = {
 /** Топ-левел нода, то что имеет свойства редактирования, этот компонент можно разделить на два, в первом - используем группировку и dnd, во втором - редактирование, так мы правильно декомпозируем и разделим ответственности */
 export const Block: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
-  const { isSelected, selectOne, addToSelect, selectAll } = useSelection();
-  const { removeNode } = useDocument();
+  const {isSelected} = useNodeSelection(nodeId);
+  const {selectNode, addToSelect, selectAllBlocks} = useSelectionActions();
+  const { removeNode } = useDocumentActions();
   const { blockHighlighting } = useUI();
-  const selected = isSelected(nodeId);
 
   if (!node) return null;
 
@@ -49,7 +45,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
     if (e.metaKey || e.ctrlKey) {
       addToSelect(nodeId);
     } else {
-      selectOne(nodeId);
+      selectNode(nodeId);
     }
   };
 
@@ -60,7 +56,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
       <ContextMenuTrigger>
         <motion.div
           key={nodeId}
-          layout
+          layout={"position"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className={clsx(typeCssClass, classes.wrapper)}
@@ -68,8 +64,6 @@ export const Block: FC<Props> = ({ nodeId }) => {
           <div
             onClick={select}
             className={clsx(
-              // `rounded-sm border border-solid overflow-hidden w-full outline-[4px]`,
-              // пока так чтобы ul,ol маркеры отображались
               `rounded-sm border border-solid w-full outline-[4px]`,
               !blockHighlighting && classes.highlight_disabled,
             )}
@@ -79,7 +73,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
                     backgroundColor: bg,
                     borderColor: text,
                     borderStyle: "solid",
-                    outlineColor: selected ? border : "transparent",
+                    outlineColor: isSelected ? border : "transparent",
                   }
                 : { outline: `1px dashed ${text}`, border: "none" }
             }
@@ -93,9 +87,9 @@ export const Block: FC<Props> = ({ nodeId }) => {
           <BrushCleaning /> Clear
         </ContextMenuItem>
         <ContextMenuItem>
-          <SquareMousePointer onClick={() => selectOne(nodeId)} /> Select
+          <SquareMousePointer onClick={() => selectNode(nodeId)} /> Select
         </ContextMenuItem>
-        <ContextMenuItem onClick={selectAll}>
+        <ContextMenuItem onClick={selectAllBlocks}>
           <SquareStack /> Select all
         </ContextMenuItem>
         <ContextMenuSeparator />
@@ -105,12 +99,6 @@ export const Block: FC<Props> = ({ nodeId }) => {
         >
           <CopyX /> Delete block
         </ContextMenuItem>
-        {/* <ContextMenuItem
-          onClick={() => removeNode(nodeId)}
-          variant={"destructive"}
-        >
-          <Trash2 /> Delete all
-        </ContextMenuItem> */}
       </ContextMenuContent>
     </ContextMenu>
   );

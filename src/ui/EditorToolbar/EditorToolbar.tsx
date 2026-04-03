@@ -1,3 +1,4 @@
+import { useDocumentActions } from "@/hooks/useDocumentActions";
 import {
   Button,
   DropdownMenu,
@@ -8,7 +9,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../shared";
-import { useDocument, useSelection } from "@/hooks";
 import { MOM } from "@/mom";
 import type { MOMAlert, MOMHeading } from "@/mom/types";
 import {
@@ -32,18 +32,19 @@ import {
   MessageSquareWarning,
   TriangleAlert,
   OctagonAlert,
+  Table,
 } from "lucide-react";
+import { useSelectionActions } from "@/hooks/useSelectionActions";
 
 export const EditorToolbar = () => {
-  const { insertNode, rootOrder, insertNodes } = useDocument();
-  const { focusNewNode } = useSelection();
+  const { insertNode, insertNodes } = useDocumentActions();
+  const { focusNewNode } = useSelectionActions();
 
   const addParagraph = () => {
     const node = MOM.Engine.createParagraph();
     insertNode({
       node,
       parentId: null,
-      index: rootOrder.length,
     });
     focusNewNode(node.id);
   };
@@ -53,7 +54,6 @@ export const EditorToolbar = () => {
     insertNode({
       node,
       parentId: null,
-      index: rootOrder.length,
     });
     // выпадающее меню кнопки хединга как то мешает навести фокус
     focusNewNode(node.id);
@@ -64,7 +64,6 @@ export const EditorToolbar = () => {
     insertNode({
       node,
       parentId: null,
-      index: rootOrder.length,
     });
     focusNewNode(node.id);
   };
@@ -74,7 +73,6 @@ export const EditorToolbar = () => {
     insertNode({
       node,
       parentId: null,
-      index: rootOrder.length,
     });
     focusNewNode(node.id);
   };
@@ -83,7 +81,6 @@ export const EditorToolbar = () => {
     insertNode({
       node: MOM.Engine.createCode(),
       parentId: null,
-      index: rootOrder.length,
     });
   };
 
@@ -92,7 +89,7 @@ export const EditorToolbar = () => {
     const listItemNode = MOM.Engine.createListItem(listNode.id);
 
     insertNodes([
-      { node: listNode, parentId: null, index: rootOrder.length },
+      { node: listNode, parentId: null },
       { node: listItemNode, parentId: listNode.id, index: 0 },
     ]);
   };
@@ -101,7 +98,6 @@ export const EditorToolbar = () => {
     insertNode({
       node: MOM.Engine.createImage(),
       parentId: null,
-      index: rootOrder.length,
     });
   };
 
@@ -109,7 +105,6 @@ export const EditorToolbar = () => {
     insertNode({
       node: MOM.Engine.createThematicBreak(),
       parentId: null,
-      index: rootOrder.length,
     });
   };
 
@@ -215,6 +210,22 @@ export const EditorToolbar = () => {
         </TooltipTrigger>
         <TooltipContent side={"right"}>Create Unordered List</TooltipContent>
       </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button disabled variant={"secondary"} size={"icon"}>
+            <Table />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Coming Soon (Table)</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant={"secondary"} size={"icon"} onClick={addBreak}>
+            <SeparatorHorizontal />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Create Thematic Break</TooltipContent>
+      </Tooltip>
       {/* <Tooltip>
         <TooltipTrigger>
           <Button variant={"secondary"} size={"icon"} onClick={addImage}>
@@ -223,14 +234,7 @@ export const EditorToolbar = () => {
         </TooltipTrigger>
         <TooltipContent side={"right"}>Create image block</TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger>
-          <Button variant={"secondary"} size={"icon"} onClick={addBreak}>
-            <SeparatorHorizontal />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side={"right"}>Create thematic break</TooltipContent>
-      </Tooltip>
+      
        */}
     </div>
   );

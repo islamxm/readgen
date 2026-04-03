@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FC } from "react";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useDocument, useNode, useSelection } from "../../hooks";
+import { useNode } from "../../hooks";
 import { MOM } from "../../mom";
 import type { MOMCode } from "../../mom/types";
 import {
@@ -44,6 +44,8 @@ import {
 } from "@devicon/react";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useDocumentActions } from "@/hooks/useDocumentActions";
+import { useSelectionActions } from "@/hooks/useSelectionActions";
 
 type Props = {
   nodeId: string;
@@ -91,18 +93,18 @@ const LANGUAGE_OPTIONS = [
 
 /**
  * этот блок нужно сделать динамическим, то есть будут два состояния:
- * 
+ *
  * - активный (обычный превью)
  * - неактивный (включается редактор и селект языков)
- * 
+ *
  * иначе даже 3 такого блока с инициализированным редактором (даже простым как *@uiw*) тормозят приложение
  * можно рассмотреть библиотеку *BlockNode* вместо *@uiw*
  */
 
 export const CodeNode: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
-  const { updateNode, removeNode } = useDocument();
-  const {prevBlock} = useSelection()
+  const { updateNode, removeNode } = useDocumentActions();
+  const { selectPrevBlock } = useSelectionActions();
 
   const [code, setCode] = useState<string>((node as MOMCode)?.value || "");
   const [language, setLanguage] = useState<string>(
@@ -149,7 +151,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Backspace" && !code) {
-      prevBlock();
+      selectPrevBlock();
       removeNode(nodeId);
     }
   };

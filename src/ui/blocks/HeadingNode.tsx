@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useChildren, useEditor, useNode } from "../../hooks";
+import { useEditor, useNode } from "../../hooks";
 import { MOM } from "../../mom";
 
 type TagType = React.ElementType<
@@ -8,14 +8,12 @@ type TagType = React.ElementType<
 type Props = { nodeId: string };
 
 export const HeadingNode: FC<Props> = ({ nodeId }) => {
-  const children = useChildren(nodeId);
+  const node = useNode(nodeId);
   const { editorProps, ref } = useEditor<HTMLHeadingElement>(
-    nodeId,
-    children,
+    node,
     "plain",
     true,
   );
-  const node = useNode(nodeId);
   const isValidNode = MOM.Guard.isHeadingNode(node);
 
   if (!isValidNode) return null;
@@ -29,7 +27,6 @@ export const HeadingNode: FC<Props> = ({ nodeId }) => {
       data-id={nodeId}
       data-type={node.type}
       data-parent-id={node.parentId ?? ""}
-      // className="block-node border border-dashed border-sky-400"
     />
   );
 };

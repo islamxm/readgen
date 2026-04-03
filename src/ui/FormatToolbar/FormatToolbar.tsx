@@ -1,7 +1,6 @@
 import {
   useEffect,
   useState,
-  type ChangeEvent,
   type FC,
   type RefObject,
 } from "react";
@@ -11,24 +10,24 @@ import type { MOMTextMarks } from "@/mom/types";
 import { useFloating, offset, flip, shift, inline } from "@floating-ui/react";
 import { MOM } from "@/mom";
 import { AnimatePresence, motion } from "motion/react";
+
 type Props = {
   containerRef: RefObject<HTMLElement>;
   applyFormat: (format: keyof MOMTextMarks) => void;
   save?: any;
 };
+
 /** сейчас этот контейнер для каждого блока свой, надо вынести на уровень Canvas */
 export const FormatToolbar: FC<Props> = ({
   containerRef,
   applyFormat,
-  save,
+  // save,
 }) => {
   const [visible, setVisible] = useState(false);
   const { refs, floatingStyles, update } = useFloating({
     placement: "top",
     middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
   });
-  const [isLink, setIsLink] = useState(false);
-  const [url, setUrl] = useState("");
 
   useEffect(() => {
     const handleSelectionChange = () => {
@@ -78,13 +77,6 @@ export const FormatToolbar: FC<Props> = ({
     setVisible(false);
   };
 
-  const toggleLink = () => {
-    setIsLink((s) => !s);
-  };
-
-  const onUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUrl(e.target.value);
-  };
 
   return (
     <AnimatePresence>

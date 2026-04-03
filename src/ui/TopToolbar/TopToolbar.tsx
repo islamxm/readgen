@@ -33,7 +33,7 @@ import {
 } from "../shared";
 import logo from "../../../public/logo.svg";
 import { useHistory } from "@/hooks";
-import { useUI } from "@/hooks/useUi";
+import { useUI } from "@/hooks";
 
 export const TopToolbar = () => {
   const {undo, redo} = useHistory()

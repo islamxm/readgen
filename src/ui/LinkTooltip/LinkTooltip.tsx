@@ -7,7 +7,7 @@ import { Button, InputGroup, InputGroupInput } from "../shared";
 
 type Props = {
   containerRef: RefObject<HTMLElement>;
-  addUrl?: (opt: { url: string; linkId: string }) => void;
+  addUrl?: (url: string, linkId: string) => void;
 };
 
 export const LinkTooltip: FC<Props> = ({ containerRef, addUrl }) => {
@@ -24,7 +24,7 @@ export const LinkTooltip: FC<Props> = ({ containerRef, addUrl }) => {
   const onSave = () => {
     if (!spanRef.current || !stateRef.current) return;
     const id = spanRef.current.dataset.id as string;
-    addUrl?.({ url: stateRef.current.url || "", linkId: id });
+    addUrl?.(stateRef.current.url || "", id);
   };
 
   const close = () => {

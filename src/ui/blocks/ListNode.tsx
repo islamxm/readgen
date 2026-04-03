@@ -1,14 +1,15 @@
 import { useRef, type FC, type JSX } from "react";
-import { useChildren, useDocument, useNode } from "../../hooks";
+import { useChildren, useNode } from "../../hooks";
 import { MOM } from "../../mom";
 import { ListItemNode } from "../inlines";
+import { useDocumentActions } from "@/hooks/useDocumentActions";
 
 type Props = {
   nodeId: string;
 };
 
 export const ListNode: FC<Props> = ({ nodeId }) => {
-  const { insertNode, removeNode } = useDocument();
+  const { insertNode, removeNode } = useDocumentActions();
   const node = useNode(nodeId);
   const children = useChildren(nodeId);
   const isValidNode = MOM.Guard.isListNode(node);
@@ -21,6 +22,7 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
 
   const Tag = isOrdered ? "ol" : ("ul" as keyof JSX.IntrinsicElements["ul"]);
 
+  // рассмотреть вариант нормализации и переноса логики в сам listItem
   const focusItem = (index: number) => {
     if (!listRef.current) return;
     const children = listRef.current.children;
@@ -52,7 +54,6 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
       removeNode(nodeId);
       return;
     }
-
     removeNode(id);
     requestAnimationFrame(() => focusItem(Math.max(0, index - 1)));
   };
