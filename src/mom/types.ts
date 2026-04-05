@@ -50,6 +50,7 @@ export interface MOMImage extends MOMNode {
   url: string;
   alt?: string;
   title?: string;
+  linkUrl?: string;
 }
 export interface MOMInlineCode extends MOMAbstractLiteral {
   type: "inlineCode";

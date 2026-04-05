@@ -9,9 +9,12 @@ export const BLOCK_THEMATIC_COLORS: Record<MOMBlockNodeType, ThematicColor> = {
   blockquote: { bg: "#FDF4FF", border: "#EDD5FA", text: "#D8A8F0" },
   alert: { bg: "#FDF4FF", border: "#EDD5FA", text: "#D8A8F0" },
   list: { bg: "#FFF8ED", border: "#FDDFA0", text: "#F5C97A" },
-  image: { bg: "#FFF0F3", border: "#FCCDD6", text: "#F5A8B8" },
-  // thematicBreak: { bg: "#F5F5F0", border: "#E0DED8", text: "#C8C6BC" },
+  // image: { bg: "#FFF0F3", border: "#FCCDD6", text: "#F5A8B8" },
+  // image: { bg: "#F4F4F5", border: "#E4E4E7", text: "#A1A1AA" },
+  // image: { bg: "#F1F5F9", border: "#E2E8F0", text: "#94A3B8" },
+  image: { bg: "#F5F5F4", border: "#E7E5E4", text: "#A8A29E" },
   thematicBreak: { bg: "transparent", border: "#E0DED8", text: "transparent" },
+  // thematicBreak: { bg: "#F5F5F0", border: "#E0DED8", text: "#C8C6BC" },
 };
 // export const BLOCK_THEMATIC_COLORS: Record<MOMBlockNodeType, ThematicColor> = {
 //   paragraph: { bg: "#FFFDFB", border: "#FDDCB0", text: "#F5C68A" },

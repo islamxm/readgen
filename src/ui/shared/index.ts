@@ -82,3 +82,4 @@ export {
   FieldContent,
   FieldTitle,
 } from "./field";
+export { Spinner } from "./spinner";

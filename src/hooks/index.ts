@@ -1,5 +1,5 @@
 export { useDocument } from "./useDocument";
-import { useDocumentActions } from "./useDocumentActions";
+export { useDocumentActions } from "./useDocumentActions";
 export { useHistory } from "./useHistory";
 export { useSelection } from "./useSelection";
 export { useNode } from "./useNode";
@@ -8,3 +8,4 @@ export { useEditor } from "./useEditor";
 export { useListEditor } from "./useListEditor";
 export { useCursor } from "./useCursor";
 export { useUI } from "./useUI";
+export { useImage } from "./useImage";

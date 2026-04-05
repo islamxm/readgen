@@ -1,5 +1,4 @@
 import { useEffect, useRef, type HTMLProps } from "react";
-import { useSelection } from "./useSelection";
 import { MOM } from "../mom";
 import type { MOMAllContent, MOMTextMarks } from "../mom/types";
 import { useHistory } from "./useHistory";
@@ -8,7 +7,6 @@ import { useCursor } from "./useCursor";
 import { useDocumentActions } from "./useDocumentActions";
 import { useChildren } from "./useChildren";
 import { useSelectionActions } from "./useSelectionActions";
-import { useSelectionStatus } from "./useSelectionStatus";
 import { useNodeSelection } from "./useNodeSelection";
 
 /**
@@ -18,7 +16,13 @@ import { useNodeSelection } from "./useNodeSelection";
  */
 type ParseType = "deep" | "plain";
 
-/** Инкапсулирует в себя все методы и свойства для редактирования элементов, это то что будет использоваться в Block */
+/**
+ * Инкапсулирует в себя все методы и свойства для редактирования элементов, это то что будет использоваться в топ левел блоках с **contenteditable** атрибутом
+ * @param {MOMAllContent} node Редактируемая MOM нода
+ * @param {ParseType} parseType Способ парсинга содержимого html элемента в MOM структуру
+ * @param {boolean} disableFormatting Отключение форматирование в редактируемой ноде
+ * @returns
+ */
 export function useEditor<T extends HTMLElement>(
   node: MOMAllContent,
   parseType: ParseType = "deep",
@@ -93,7 +97,7 @@ export function useEditor<T extends HTMLElement>(
 
     // когда окно приложение скрывается нужно вручную сделать blur() чтобы отменить каректку из contenteditable
     if (ref.current) {
-      ref.current.blur();
+      // ref.current.blur();
     }
   };
 
@@ -134,17 +138,23 @@ export function useEditor<T extends HTMLElement>(
     if (e.shiftKey) {
       switch (e.code) {
         case "Tab":
+          console.warn(
+            "когда прыгает к самому начальному блоку то введенные данные в текущем блоке не сохраняютсяы",
+          );
           e.preventDefault();
           onBlur();
-          selectPrevBlock();
+          selectPrevBlock(node.id);
           break;
       }
       return;
     }
     if (e.code === "Tab") {
+      console.warn(
+        "когда прыгает к самому начальному блоку то введенные данные в текущем блоке не сохраняютсяы",
+      );
       e.preventDefault();
       onBlur();
-      selectNextBlock();
+      selectNextBlock(node.id);
       return;
     }
     if (e.code === "Enter") {
@@ -159,7 +169,7 @@ export function useEditor<T extends HTMLElement>(
         console.warn(
           "Тут стирается последний символ из блока куда переходит фокус, то есть такое двойное удаление символа",
         );
-        selectPrevBlock();
+        selectPrevBlock(node.id);
         removeNode(node.id);
       }
       return;

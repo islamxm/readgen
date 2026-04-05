@@ -6,6 +6,7 @@ import {
   ParagraphNode,
   HeadingNode,
   CodeNode,
+  ImageNode,
 } from "./blocks";
 import { AlertNode } from "./blocks/AlertNode";
 import { BlockquoteNode } from "./blocks/BlockquoteNode";
@@ -38,7 +39,7 @@ function renderBlock(node: MOMBlockNode) {
     case "code":
       return <CodeNode nodeId={node.id} />;
     case "image":
-      return null;
+      return <ImageNode nodeId={node.id} />;
     case "thematicBreak":
       return <ThematicBreakNode nodeId={node.id} />;
     default:

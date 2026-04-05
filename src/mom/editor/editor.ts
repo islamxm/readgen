@@ -388,6 +388,9 @@ export function getCssClassByNode(node: MOMAllContent) {
   if(node.type === "thematicBreak") {
     return "hr"
   }
+  if(node.type === "image") {
+    return "img"
+  }
   return "";
 }
 

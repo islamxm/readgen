@@ -28,12 +28,12 @@ export function useSelectionActions() {
     dispatch(selectionStoreActions.clearAllSelection());
   }
 
-  function selectNextBlock() {
-    dispatch(selectNextBlockThunk());
+  function selectNextBlock(currentNodeId: string) {
+    dispatch(selectNextBlockThunk(currentNodeId));
   }
 
-  function selectPrevBlock() {
-    dispatch(selectPrevBlockThunk());
+  function selectPrevBlock(currentNodeId: string) {
+    dispatch(selectPrevBlockThunk(currentNodeId));
   }
 
   function selectAllBlocks() {

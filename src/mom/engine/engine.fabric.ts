@@ -60,6 +60,7 @@ export function createImage(parentId: string | null = null): MOMImage {
     url: "",
     alt: "",
     title: "",
+    linkUrl: ""
   };
 }
 

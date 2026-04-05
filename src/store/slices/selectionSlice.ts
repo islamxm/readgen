@@ -56,25 +56,29 @@ export const selectionSlice = createSlice({
   },
 });
 
-export const selectNextBlockThunk = (): AppThunk => (dispatch, getState) => {
-  const state = getState();
+export const selectNextBlockThunk =
+  (currentNodeId: string): AppThunk =>
+  (dispatch, getState) => {
+    const state = getState();
 
-  const { focusedId } = state.selection;
-  const { rootOrder } = state.document.doc;
+    // const { focusedId } = state.selection;
+    const { rootOrder } = state.document.doc;
 
-  if (!focusedId) return;
+    // if (!focusedId) return;
 
-  const indexOfFocused = rootOrder.indexOf(focusedId);
+    const indexOfFocused = rootOrder.indexOf(currentNodeId);
 
-  // Безопасный переход к следующему индексу
-  const nextIndex = (indexOfFocused + 1) % rootOrder.length;
-  const nextId = rootOrder[nextIndex];
+    // Безопасный переход к следующему индексу
+    const nextIndex = (indexOfFocused + 1) % rootOrder.length;
+    const nextId = rootOrder[nextIndex];
 
-  if (nextId) {
-    dispatch(selectionStoreActions.selectNode(nextId));
-    dispatch(selectionStoreActions.focusNode(nextId));
-  }
-};
+    if (nextId) {
+      console.log(nextId);
+      // dispatch(selectionStoreActions.selectNode(nextId));
+      // dispatch(selectionStoreActions.focusNode(nextId));
+      dispatch(selectionStoreActions.focusNewNode(nextId));
+    }
+  };
 
 export const addToSelectionThunk =
   (nodeId: string): AppThunk =>
@@ -110,19 +114,20 @@ export const selectNodeThunk =
     dispatch(selectionStoreActions.selectNode(nodeId));
   };
 
-export const selectPrevBlockThunk = (): AppThunk => (dispatch, getState) => {
-  const state = getState();
-  const focusedId = state.selection.focusedId;
-  const selectedIds = state.selection.selectedIds;
-  const rootOrder = state.document.doc.rootOrder;
+export const selectPrevBlockThunk =
+  (currentNodeId: string): AppThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const rootOrder = state.document.doc.rootOrder;
 
-  if (!focusedId) return;
-  const indexOfFocused = rootOrder.indexOf(selectedIds[0]);
-  const prevIndex =
-    indexOfFocused - 1 < 0 ? rootOrder.length - 1 : indexOfFocused - 1;
-  dispatch(selectionStoreActions.selectNode(rootOrder[prevIndex]));
-  dispatch(selectionStoreActions.focusNode(rootOrder[prevIndex]));
-};
+    const indexOfFocused = rootOrder.indexOf(currentNodeId);
+    const prevIndex =
+      indexOfFocused - 1 < 0 ? rootOrder.length - 1 : indexOfFocused - 1;
+    const targetNodeId = rootOrder[prevIndex];
+    dispatch(selectionStoreActions.focusNewNode(targetNodeId));
+    // dispatch(selectionStoreActions.selectNode(rootOrder[prevIndex]));
+    // dispatch(selectionStoreActions.focusNode(rootOrder[prevIndex]));
+  };
 
 export const selectAllBlocksThunk = (): AppThunk => (dispatch, getState) => {
   const state = getState();
