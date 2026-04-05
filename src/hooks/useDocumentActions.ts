@@ -72,6 +72,10 @@ export function useDocumentActions() {
     dispatch(addLinkThunk(url, linkId));
   }
 
+  function copyNode(node: MOMAllContent | undefined) {
+    dispatch(documentStoreActions.copyNode(node));
+  }
+
   return {
     insertNode,
     insertNodes,
@@ -83,5 +87,6 @@ export function useDocumentActions() {
     renameGroup,
     addLink,
     commitInlineEdit,
+    copyNode
   };
 }

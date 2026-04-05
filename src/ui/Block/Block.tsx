@@ -15,6 +15,7 @@ import {
 } from "../shared";
 import {
   BrushCleaning,
+  Copy,
   CopyX,
   SquareMousePointer,
   SquareStack,
@@ -24,6 +25,7 @@ import { useUI } from "@/hooks";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useNodeSelection } from "@/hooks/useNodeSelection";
 import { useSelectionActions } from "@/hooks/useSelectionActions";
+import { toast } from "sonner";
 
 type Props = {
   nodeId: string;
@@ -32,9 +34,9 @@ type Props = {
 /** Топ-левел нода, то что имеет свойства редактирования, этот компонент можно разделить на два, в первом - используем группировку и dnd, во втором - редактирование, так мы правильно декомпозируем и разделим ответственности */
 export const Block: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
-  const {isSelected} = useNodeSelection(nodeId);
-  const {selectNode, addToSelect, selectAllBlocks} = useSelectionActions();
-  const { removeNode } = useDocumentActions();
+  const { isSelected } = useNodeSelection(nodeId);
+  const { selectNode, addToSelect, selectAllBlocks } = useSelectionActions();
+  const { removeNode, copyNode } = useDocumentActions();
   const { blockHighlighting } = useUI();
 
   if (!node) return null;
@@ -86,6 +88,14 @@ export const Block: FC<Props> = ({ nodeId }) => {
         <ContextMenuItem>
           <BrushCleaning /> Clear
         </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => {
+            copyNode(node);
+            toast.success("Block is copied");
+          }}
+        >
+          <Copy /> Copy Block
+        </ContextMenuItem>
         <ContextMenuItem>
           <SquareMousePointer onClick={() => selectNode(nodeId)} /> Select
         </ContextMenuItem>
@@ -97,7 +107,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
           onClick={() => removeNode(nodeId)}
           variant={"destructive"}
         >
-          <CopyX /> Delete block
+          <CopyX /> Delete Block
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

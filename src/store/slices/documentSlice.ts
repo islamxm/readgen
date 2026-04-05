@@ -12,7 +12,9 @@ type UndoStack = {
 type InitialState = {
   doc: MOMDocument;
   history: UndoStack;
+  /** возможно нигде не используется, рассмотреть вариант удаления */
   dirty: boolean;
+  copiedNode: MOMAllContent | undefined;
 };
 
 const pNode = MOM.Engine.createParagraph(null);
@@ -29,6 +31,7 @@ const initialState: InitialState = {
   },
   history: { past: [], future: [] },
   dirty: false,
+  copiedNode: undefined,
 };
 
 const MAX_HISTORY_DEPTH = 100;
@@ -232,6 +235,10 @@ export const documentSlice = createSlice({
 
       const batchOp: BatchOp = { type: "batch", ops };
       commitResult(state, { doc: currentDoc, op: batchOp });
+    },
+
+    copyNode: (state, action: PayloadAction<MOMAllContent | undefined>) => {
+      state.copiedNode = action.payload;
     },
   },
 });
