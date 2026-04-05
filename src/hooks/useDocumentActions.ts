@@ -76,6 +76,10 @@ export function useDocumentActions() {
     dispatch(documentStoreActions.copyNode(node));
   }
 
+  function clearDocument() {
+    dispatch(documentStoreActions.clearDocument());
+  }
+
   return {
     insertNode,
     insertNodes,
@@ -87,6 +91,7 @@ export function useDocumentActions() {
     renameGroup,
     addLink,
     commitInlineEdit,
-    copyNode
+    copyNode,
+    clearDocument
   };
 }

@@ -240,6 +240,15 @@ export const documentSlice = createSlice({
     copyNode: (state, action: PayloadAction<MOMAllContent | undefined>) => {
       state.copiedNode = action.payload;
     },
+
+    clearDocument: (state) => {
+      state.doc.groups = {};
+      state.doc.nodes = {};
+      state.doc.rootOrder = [];
+      state.dirty = false;
+      state.history = {past: [], future: []};
+      state.copiedNode = undefined;
+    }
   },
 });
 

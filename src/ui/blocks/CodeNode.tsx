@@ -17,35 +17,11 @@ import {
   TooltipTrigger,
 } from "../shared";
 import { getBlockColors } from "../tokens";
-import {
-  JavascriptOriginalIcon,
-  TypescriptOriginalIcon,
-  Html5OriginalIcon,
-  MarkdownOriginalIcon,
-  Css3OriginalIcon,
-  SassOriginalIcon,
-  LessPlainWordmarkIcon,
-  JsonOriginalIcon,
-  PythonOriginalIcon,
-  JavaOriginalIcon,
-  CsharpOriginalIcon,
-  CplusplusOriginalIcon,
-  COriginalIcon,
-  GolandOriginalIcon,
-  RustOriginalIcon,
-  PhpOriginalIcon,
-  RubyOriginalIcon,
-  SwiftOriginalIcon,
-  KotlinOriginalIcon,
-  YamlOriginalIcon,
-  DockerOriginalIcon,
-  BashOriginalIcon,
-  NginxOriginalIcon,
-} from "@devicon/react";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useSelectionActions } from "@/hooks/useSelectionActions";
+import { useNodeSelection } from "@/hooks/useNodeSelection";
 
 type Props = {
   nodeId: string;
@@ -55,39 +31,37 @@ const LANGUAGE_OPTIONS = [
   {
     value: "javascript",
     label: "JavaScript",
-    icon: <JavascriptOriginalIcon />,
   },
   {
     value: "typescript",
     label: "TypeScript",
-    icon: <TypescriptOriginalIcon />,
   },
   { value: "jsx", label: "JSX" },
   { value: "tsx", label: "TSX" },
-  { value: "html", label: "HTML", icon: <Html5OriginalIcon /> },
-  { value: "markdown", label: "Markdown", icon: <MarkdownOriginalIcon /> },
-  { value: "css", label: "CSS", icon: <Css3OriginalIcon /> },
-  { value: "scss", label: "SCSS", icon: <SassOriginalIcon /> },
-  { value: "sass", label: "Sass", icon: <SassOriginalIcon /> },
-  { value: "less", label: "Less", icon: <LessPlainWordmarkIcon /> },
-  { value: "json", label: "json", icon: <JsonOriginalIcon /> },
-  { value: "python", label: "Python", icon: <PythonOriginalIcon /> },
-  { value: "java", label: "Java", icon: <JavaOriginalIcon /> },
-  { value: "csharp", label: "C#", icon: <CsharpOriginalIcon /> },
-  { value: "cpp", label: "C++", icon: <CplusplusOriginalIcon /> },
-  { value: "c", label: "C", icon: <COriginalIcon /> },
-  { value: "go", label: "Golang", icon: <GolandOriginalIcon /> },
-  { value: "rust", label: "Rust", icon: <RustOriginalIcon /> },
-  { value: "php", label: "PHP", icon: <PhpOriginalIcon /> },
-  { value: "ruby", label: "Ruby", icon: <RubyOriginalIcon /> },
-  { value: "swift", label: "Swift", icon: <SwiftOriginalIcon /> },
-  { value: "kotlin", label: "Kotlin", icon: <KotlinOriginalIcon /> },
-  { value: "yaml", label: "YAML", icon: <YamlOriginalIcon /> },
+  { value: "html", label: "HTML" },
+  { value: "markdown", label: "Markdown" },
+  { value: "css", label: "CSS" },
+  { value: "scss", label: "SCSS" },
+  { value: "sass", label: "Sass" },
+  { value: "less", label: "Less" },
+  { value: "json", label: "json" },
+  { value: "python", label: "Python" },
+  { value: "java", label: "Java" },
+  { value: "csharp", label: "C#" },
+  { value: "cpp", label: "C++" },
+  { value: "c", label: "C" },
+  { value: "go", label: "Golang" },
+  { value: "rust", label: "Rust" },
+  { value: "php", label: "PHP" },
+  { value: "ruby", label: "Ruby" },
+  { value: "swift", label: "Swift" },
+  { value: "kotlin", label: "Kotlin" },
+  { value: "yaml", label: "YAML" },
   { value: "toml", label: "TOML" },
-  { value: "docker", label: "Docker", icon: <DockerOriginalIcon /> },
+  { value: "docker", label: "Docker" },
   { value: "sql", label: "SQL" },
-  { value: "bash", label: "bash", icon: <BashOriginalIcon /> },
-  { value: "nginx", label: "nginx", icon: <NginxOriginalIcon /> },
+  { value: "bash", label: "bash" },
+  { value: "nginx", label: "nginx" },
   { value: "makefile", label: "Makefile" },
 ];
 
@@ -151,7 +125,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Backspace" && !code) {
-      selectPrevBlock();
+      selectPrevBlock(node.id);
       removeNode(nodeId);
     }
   };
@@ -183,9 +157,8 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Select a language</SelectLabel>
-              {LANGUAGE_OPTIONS.map(({ value, label, icon }) => (
+              {LANGUAGE_OPTIONS.map(({ value, label }) => (
                 <SelectItem key={value} value={value}>
-                  {icon}
                   {label}
                 </SelectItem>
               ))}
@@ -206,6 +179,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
           <TooltipContent>Copy</TooltipContent>
         </Tooltip>
       </div>
+
       <div className="code-block-body">
         {language && (
           <CodeEditor

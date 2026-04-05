@@ -112,11 +112,27 @@ export const EditorToolbar = () => {
     <div className={"p-2 gap-2 flex flex-col border-r"}>
       <Tooltip>
         <TooltipTrigger>
-          <Button variant={"secondary"} size={"icon"} onClick={addParagraph}>
-            P
+          <Button variant={"secondary"} size={"icon"} onClick={() => addHeading(1)}>
+            <Heading1 />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side={"right"}>Create Paragraph</TooltipContent>
+        <TooltipContent side={"right"}>Create Heading 1</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant={"secondary"} size={"icon"} onClick={() => addHeading(2)}>
+            <Heading2 />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Create Heading 2</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant={"secondary"} size={"icon"} onClick={() => addHeading(3)}>
+            <Heading3 />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Create Heading 3</TooltipContent>
       </Tooltip>
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -125,15 +141,6 @@ export const EditorToolbar = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side={"right"}>
-          <DropdownMenuItem onClick={() => addHeading(1)}>
-            <Heading1 /> Heading 1
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => addHeading(2)}>
-            <Heading2 /> Heading 2
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => addHeading(3)}>
-            <Heading3 /> Heading 3
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => addHeading(4)}>
             <Heading4 /> Heading 4
           </DropdownMenuItem>
@@ -145,6 +152,14 @@ export const EditorToolbar = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant={"secondary"} size={"icon"} onClick={addParagraph}>
+            P
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={"right"}>Create Paragraph</TooltipContent>
+      </Tooltip>
       <Tooltip>
         <TooltipTrigger>
           <Button variant={"secondary"} size={"icon"} onClick={addBlockquote}>

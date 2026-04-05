@@ -32,22 +32,21 @@ import {
   TooltipTrigger,
 } from "../shared";
 import logo from "../../../public/logo.svg";
-import { useHistory } from "@/hooks";
+import { useDocumentActions, useHistory } from "@/hooks";
 import { useUI } from "@/hooks";
 
 export const TopToolbar = () => {
-  const {undo, redo} = useHistory()
-  const {toggleBlockHighlighting, blockHighlighting} = useUI()
+  const { undo, redo } = useHistory();
+  const { toggleBlockHighlighting, blockHighlighting } = useUI();
+  const { clearDocument } = useDocumentActions();
+
   return (
     <div className="border-bottom border-b flex gap-2">
-      <a href="#" className="w-[53px] hatching border-r logo flex justify-center items-center">
-        <img
-          src={logo}
-          width={40}
-          height={40}
-          alt="Readgen"
-          className="flex"
-          />
+      <a
+        href="#"
+        className="w-[53px] hatching border-r logo flex justify-center items-center"
+      >
+        <img src={logo} width={40} height={40} alt="Readgen" className="flex" />
       </a>
       <div className="flex p-2 gap-1 justify-between flex-1">
         <div className="flex gap-1">
@@ -81,7 +80,10 @@ export const TopToolbar = () => {
                     <Settings /> Settings
                   </MenubarItem>
                   <MenubarSeparator />
-                  <MenubarItem variant={"destructive"}>
+                  <MenubarItem onClick={clearDocument} variant={"destructive"}>
+                    <BrushCleaning /> Clear
+                  </MenubarItem>
+                  <MenubarItem onClick={clearDocument} variant={"destructive"}>
                     <Trash2 /> Delete
                   </MenubarItem>
                 </MenubarContent>
@@ -97,7 +99,8 @@ export const TopToolbar = () => {
                   </MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem onClick={toggleBlockHighlighting}>
-                    <SquareStack /> {blockHighlighting ? "Disable" : "Enable"} block highlighting
+                    <SquareStack /> {blockHighlighting ? "Disable" : "Enable"}{" "}
+                    block highlighting
                   </MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem disabled>
