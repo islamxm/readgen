@@ -79,6 +79,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
   const { updateNode, removeNode } = useDocumentActions();
   const { selectPrevBlock } = useSelectionActions();
+  const { isSelected } = useNodeSelection(nodeId);
 
   const [code, setCode] = useState<string>((node as MOMCode)?.value || "");
   const [language, setLanguage] = useState<string>(
@@ -90,6 +91,10 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
   if (!isValidNode) return null;
 
   const { border } = getBlockColors(node.type);
+
+  const languageLabel = LANGUAGE_OPTIONS.find(
+    (f) => f.value === language,
+  )?.label;
 
   const onCodeChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
@@ -147,37 +152,46 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
       className="block-node code-block p-[5px]"
     >
       <div className="code-block-header flex gap-2 justify-between">
-        <Select value={language} onValueChange={onLangChange}>
-          <SelectTrigger
-            style={{ backgroundColor: border }}
-            className="w-full max-w-48 shadow-none border-none rounded-sm"
-          >
-            <SelectValue placeholder="Select a language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Select a language</SelectLabel>
-              {LANGUAGE_OPTIONS.map(({ value, label }) => (
-                <SelectItem key={value} value={value}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              onClick={copyToClipboard}
-              variant={"outline"}
-              className="bg-transparent"
-              size={"icon"}
+        {isSelected ? (
+          <Select value={language} onValueChange={onLangChange}>
+            <SelectTrigger
+              style={{ backgroundColor: border }}
+              className="w-full max-w-48 shadow-none border-none rounded-sm"
             >
-              <Copy />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Copy</TooltipContent>
-        </Tooltip>
+              <SelectValue placeholder="Select a language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Select a language</SelectLabel>
+                {LANGUAGE_OPTIONS.map(({ value, label }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        ) : (
+          <div className="text-[0.875rem] px-[12px] py-[8px]">
+            {language ? languageLabel : "Select a language"}
+          </div>
+        )}
+
+        {code && (
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                onClick={copyToClipboard}
+                variant={"outline"}
+                className="bg-transparent"
+                size={"icon"}
+              >
+                <Copy />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Copy</TooltipContent>
+          </Tooltip>
+        )}
       </div>
 
       <div className="code-block-body">

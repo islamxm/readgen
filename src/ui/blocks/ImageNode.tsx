@@ -113,7 +113,7 @@ const Preview: FC<{
               <MoreVertical />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom">
+          <DropdownMenuContent className="w-[300px]" side="bottom">
             <div className="flex flex-col gap-[5px] p-[10px]">
               <h5>Image meta info</h5>
               <Input

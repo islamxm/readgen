@@ -2,6 +2,7 @@ import { MOM } from "..";
 import type { MOMAllContent } from "../types";
 
 /** Получение итогового состояния MOM документа в виде Markdown строки */
+// поработать над безопасностью (XSS)
 export function momToMarkdown() {}
 export function momToHTML(
   nodes: Array<MOMAllContent>,

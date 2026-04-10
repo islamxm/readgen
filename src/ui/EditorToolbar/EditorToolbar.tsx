@@ -241,14 +241,6 @@ export const EditorToolbar = () => {
         </TooltipTrigger>
         <TooltipContent side={"right"}>Create image block</TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger>
-          <Button disabled variant={"secondary"} size={"icon"}>
-            <Table />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side={"right"}>Coming Soon (Table)</TooltipContent>
-      </Tooltip>
     </div>
   );
 };
