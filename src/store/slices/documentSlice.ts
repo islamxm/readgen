@@ -368,7 +368,7 @@ export const deleteSelectedBlocksThunk =
         ? rootOrder[lastSelectedIndex + 1]
         : rootOrder[firstSelectedIndex - 1];
 
-    dispatch(selectionStoreActions.selectNode(newSelectId));
+    dispatch(selectionStoreActions.selectAndFocusNode(newSelectId));
   };
 
 export const documentStoreActions = documentSlice.actions;

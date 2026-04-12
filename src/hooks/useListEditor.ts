@@ -138,6 +138,7 @@ export function useListEditor(
 
   useEffect(() => {
     if (isFocused) {
+      console.log(isFocused);
       ref.current?.focus();
     }
   }, [isFocused]);

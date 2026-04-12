@@ -26,7 +26,7 @@ export const HtmlNode: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
   const { ref, fieldProps } = useHtml(node as MOMHtml);
 
-  const [viewType, setViewType] = useState<ViewType>("preview");
+  const [viewType, setViewType] = useState<ViewType>("raw");
 
   const isValidNode = MOM.Guard.isHtmlNode(node);
 

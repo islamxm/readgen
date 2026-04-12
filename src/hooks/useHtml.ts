@@ -6,10 +6,9 @@ import { useSelectionActions } from "./useSelectionActions";
 import { useNodeSelection } from "./useNodeSelection";
 
 export function useHtml(node: MOMHtml) {
-  const { updateNode, removeNode } = useDocumentActions();
-  const { selectPrevBlock, selectNextBlock, removeFromSelect } =
-    useSelectionActions();
-  const { isSelected } = useNodeSelection(node.id);
+  const { updateNode } = useDocumentActions();
+  const { removeFromSelect } = useSelectionActions();
+  const { isFocused } = useNodeSelection(node.id);
   const ref = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState(node.value);
 
@@ -42,6 +41,12 @@ export function useHtml(node: MOMHtml) {
 
   const onPaste = () => {};
 
+  useEffect(() => {
+    if (isFocused) {
+      ref.current?.focus();
+    }
+  }, [isFocused]);
+
   const fieldProps: TextareaAutosizeProps = {
     value,
     onChange: onValueChange,
@@ -50,7 +55,7 @@ export function useHtml(node: MOMHtml) {
     spellCheck: false,
     tabIndex: -1,
     onPaste,
-    onBlur
+    onBlur,
   };
 
   return {
