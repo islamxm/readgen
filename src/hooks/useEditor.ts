@@ -34,9 +34,6 @@ export function useEditor<T extends HTMLElement>(
   const ref = useRef<T | null>(null);
   const { restoreCursor, saveCursor } = useCursor<T>(ref);
 
-  // пока непонятно
-  const isActive = isSelected && isFocused;
-
   /** для того чтобы нормально вставлять html в зависимости от измененного стейта (отбираем контроль у реакта) */
   useEffect(() => {
     if (!ref.current) return;
@@ -54,10 +51,10 @@ export function useEditor<T extends HTMLElement>(
     }
     ref.current.innerHTML = html;
 
-    if (isActive) {
+    if (isFocused) {
       restoreCursor();
     }
-  }, [children, isActive, parseType]);
+  }, [children, isFocused, parseType]);
 
   /** сохранение результата редактирования (данные беруться из dom) */
   const save = () => {

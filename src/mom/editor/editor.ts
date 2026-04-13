@@ -1,3 +1,4 @@
+import { shallowEqual } from "react-redux";
 import { MOM } from "..";
 import type { MOMAlert, MOMAllContent, MOMText, MOMTextMarks } from "../types";
 import type { CursorPosition, SelectionFragment } from "./editor.types";
@@ -10,7 +11,7 @@ export function applyFormat(
 ) {
   const selection = window.getSelection();
   if (!selection || isNothingSelected(selection)) return;
-  let range = getRange(selection);
+  const range = getRange(selection);
 
   const rangeSnapshot = {
     startOffset: range.startOffset,
@@ -48,16 +49,41 @@ export function applyFormat(
     parentId,
     existingNodes,
   });
-  const finalNodes = modifiedBlock({
+  const modifiedNodes = modifiedBlock({
     allNodes: existingNodes,
     nodesBySpanId: newNodes,
   });
+  const finalNodes = normalizeFormattedNodes(modifiedNodes);
 
   return {
     parentId,
     nodes: finalNodes,
     childrenIds: finalNodes.map((n) => n.id),
   };
+}
+
+/** для склейки схожих по формату нод и очистки от нод-пустышек */
+function normalizeFormattedNodes(nodes: Array<MOMText>): Array<MOMText> {
+  if (nodes.length === 0) return [];
+
+  return nodes.reduce((acc: Array<MOMText>, next: MOMText) => {
+    if (next.value === "") {
+      return acc;
+    }
+    const last = acc[acc.length - 1];
+    if (!last) {
+      acc.push({ ...next });
+      return acc;
+    }
+    const isMarksEqual = shallowEqual(last.marks, next.marks);
+    const isUrlEqual = last.url === next.url;
+    if (isMarksEqual && isUrlEqual) {
+      last.value += next.value;
+    } else {
+      acc.push({ ...next });
+    }
+    return acc;
+  }, []);
 }
 
 /** получаем элементы которые вклчают выделение (не text node) */
