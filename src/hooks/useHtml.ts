@@ -2,15 +2,17 @@ import type { MOMHtml } from "@/mom/types";
 import { useEffect, useRef, useState } from "react";
 import { useDocumentActions } from "./useDocumentActions";
 import type { TextareaAutosizeProps } from "react-textarea-autosize";
-import { useSelectionActions } from "./useSelectionActions";
 import { useNodeSelection } from "./useNodeSelection";
+import type { Tabs } from "radix-ui";
+
+type ViewType = "preview" | "raw";
 
 export function useHtml(node: MOMHtml) {
   const { updateNode } = useDocumentActions();
-  const { removeFromSelect } = useSelectionActions();
   const { isFocused } = useNodeSelection(node.id);
   const ref = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState(node.value);
+  const [viewType, setViewType] = useState<ViewType>("raw");
 
   const onValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -36,10 +38,12 @@ export function useHtml(node: MOMHtml) {
   const onBlur = () => {
     save();
     blur();
-    removeFromSelect(node.id);
   };
 
-  const onPaste = () => {};
+  const onViewTypeChange = (value: ViewType) => {
+    setViewType(value);
+    save();
+  };
 
   useEffect(() => {
     if (isFocused) {
@@ -54,12 +58,17 @@ export function useHtml(node: MOMHtml) {
     minRows: 1,
     spellCheck: false,
     tabIndex: -1,
-    onPaste,
     onBlur,
+  };
+
+  const tabProps: React.ComponentProps<typeof Tabs.Root> = {
+    value: viewType,
+    onValueChange: (v) => onViewTypeChange(v as ViewType),
   };
 
   return {
     ref,
     fieldProps,
+    tabProps,
   };
 }
