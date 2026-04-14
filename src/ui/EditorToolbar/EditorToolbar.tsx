@@ -31,12 +31,20 @@ import {
   TriangleAlert,
   OctagonAlert,
   Braces,
+  Puzzle,
 } from "lucide-react";
 import { useSelectionActions } from "@/hooks/useSelectionActions";
+import { useCompositions } from "@/hooks";
 
 export const EditorToolbar = () => {
   const { insertNode, insertNodes } = useDocumentActions();
   const { selectAndFocusNode } = useSelectionActions();
+  const {
+    createProjectHeroComposition,
+    createQuickInstallComposition,
+    createFeatureShowcaseComposition,
+    createUsageSnippetComposition,
+  } = useCompositions();
 
   const addParagraph = () => {
     const node = MOM.Engine.createParagraph();
@@ -53,7 +61,6 @@ export const EditorToolbar = () => {
       node,
       parentId: null,
     });
-    // выпадающее меню кнопки хединга как то мешает навести фокус
     selectAndFocusNode(node.id);
   };
 
@@ -124,6 +131,32 @@ export const EditorToolbar = () => {
 
   return (
     <div className={"p-2 gap-2 flex flex-col border-r min-h-0 overflow-auto"}>
+      <Tooltip>
+        <DropdownMenu>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <Button size={"icon"}>
+                <Puzzle />
+              </Button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <TooltipContent side={"right"}>Compositions</TooltipContent>
+          <DropdownMenuContent side={"right"}>
+            <DropdownMenuItem onClick={createProjectHeroComposition}>
+              Project Hero
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={createQuickInstallComposition}>
+              Quick Install
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={createFeatureShowcaseComposition}>
+              Feature Showcase
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={createUsageSnippetComposition}>
+              Usage Snippet
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button

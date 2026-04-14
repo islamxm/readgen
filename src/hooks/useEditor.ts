@@ -40,8 +40,13 @@ export function useEditor<T extends HTMLElement>(
     if (parseType === "deep") {
       html = currentHtml.current ?? MOM.Serializer.momToHTML(children, node.id);
     }
+    // программная вставка не работает
     if (parseType === "plain") {
-      html = ref.current.textContent;
+      let value = ref.current.textContent;
+      if("value" in node) {
+        value = node.value
+      }
+      html = value
     }
     if (ref.current.innerHTML === html) return;
     ref.current.innerHTML = html;
@@ -49,7 +54,7 @@ export function useEditor<T extends HTMLElement>(
     if (isFocused) {
       restoreCursor();
     }
-  }, [children, parseType, node.id, restoreCursor, isFocused]);
+  }, [children, parseType, node, restoreCursor, isFocused]);
 
   useEffect(() => {
     if (isFocused) {

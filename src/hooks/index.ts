@@ -12,3 +12,4 @@ export { useImage } from "./useImage";
 export { useRaw } from "./useRaw";
 export { useDocumentShortcuts } from "./useDocumentShortcuts";
 export { useEvent } from "./useEvent";
+export { useCompositions } from "./useCompositions";

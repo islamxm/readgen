@@ -90,9 +90,9 @@ export const documentSlice = createSlice({
     ) => {
       const result = MOM.Engine.insertNodes({
         doc: state.doc,
-        ops: action.payload.ops.map((o) => ({
+        ops: action.payload.ops.map((o, ind) => ({
           ...o,
-          index: o.index ?? state.doc.rootOrder.length,
+          index: o.index ?? state.doc.rootOrder.length + ind,
         })),
       });
       commitResult(state, result);

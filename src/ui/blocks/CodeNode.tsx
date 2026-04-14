@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FC } from "react";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useNode } from "../../hooks";
+import { useNode, useUI } from "../../hooks";
 import { MOM } from "../../mom";
 import type { MOMCode } from "../../mom/types";
 import {
@@ -20,8 +20,8 @@ import { getBlockColors } from "../tokens";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
-import { useSelectionActions } from "@/hooks/useSelectionActions";
 import { useNodeSelection } from "@/hooks/useNodeSelection";
+import clsx from "clsx";
 
 type Props = {
   nodeId: string;
@@ -79,6 +79,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
   const { updateNode } = useDocumentActions();
   const { isSelected, isFocused } = useNodeSelection(nodeId);
+  const {blockHighlighting} = useUI();
 
   const [code, setCode] = useState<string>((node as MOMCode)?.value || "");
   const [language, setLanguage] = useState<string>(
@@ -148,7 +149,7 @@ export const CodeNode: FC<Props> = ({ nodeId }) => {
       data-id={nodeId}
       data-type={node.type}
       data-parent-id={node.parentId ?? ""}
-      className="block-node code-block p-[5px]"
+      className={clsx("block-node code-block p-[5px]", !blockHighlighting && "code-block-preview-bg")}
     >
       <div className="code-block-header flex gap-2 justify-between">
         {isSelected ? (

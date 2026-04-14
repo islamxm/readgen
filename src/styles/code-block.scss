@@ -1,7 +1,7 @@
 .code-block {
 
   .code-block-body {
-    background-color: transparent !important;
+    // background-color: transparent !important;
 
     .code-block-editor {
       font-size: 16px;
@@ -12,5 +12,11 @@
         padding: 0 !important;
       }
     }
+  }
+}
+
+.code-block.code-block-preview-bg {
+  .code-block-body {
+    background-color: #f6f8fa;
   }
 }

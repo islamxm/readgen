@@ -45,12 +45,13 @@ export function createHeading(
 export function createCode(
   lang: string = "",
   parentId: string | null = null,
+  value: string = ""
 ): MOMCode {
   return {
     ...base(parentId),
     type: "code",
     lang,
-    value: "",
+    value,
   };
 }
 
