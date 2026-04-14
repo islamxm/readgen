@@ -1,4 +1,4 @@
-# ReadGen (rate my skills 2)
+# ReadGen
 
 **ReadGen** is a specialized, block-based README builder. This project showcases low-level DOM manipulation skills, a deep understanding of the React lifecycle, and architectural maturity in building complex text-editing systems.
 

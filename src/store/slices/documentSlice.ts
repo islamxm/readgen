@@ -240,6 +240,7 @@ export const documentSlice = createSlice({
       commitResult(state, { doc: currentDoc, op: batchOp });
     },
 
+    // должен копировать вместе со всеми содержимыми, переписать
     copyNode: (state, action: PayloadAction<MOMAllContent | undefined>) => {
       state.copiedNode = action.payload;
     },

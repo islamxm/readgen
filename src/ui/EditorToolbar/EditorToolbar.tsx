@@ -135,7 +135,7 @@ export const EditorToolbar = () => {
         <DropdownMenu>
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
-              <Button size={"icon"}>
+              <Button size={"icon"} className="bg-blue-500 hover:bg-blue-900">
                 <Puzzle />
               </Button>
             </DropdownMenuTrigger>
