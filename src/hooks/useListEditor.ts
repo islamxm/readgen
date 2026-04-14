@@ -18,8 +18,7 @@ export function useListEditor(
   deleteItem?: any,
   focusItem?: any,
 ) {
-  const parentChildren = useChildren(listNodeId);
-  const { commitInlineEdit, insertNode } = useDocumentActions();
+  const { commitInlineEdit } = useDocumentActions();
   const { focuseNode, blur } = useSelectionActions();
   const { isFocused } = useNodeSelection(listNodeId);
   const ref = useRef<HTMLLIElement>(null);

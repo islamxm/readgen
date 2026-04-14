@@ -7,11 +7,9 @@ export function useCursor<T extends HTMLElement>(elementRef: RefObject<T | null>
   const saveCursor = () => {
     if (!elementRef?.current) return;
     cursorRef.current = MOM.Editor.saveCursor(elementRef.current);
-    console.log("saved: ", cursorRef.current);
   };
 
   const restoreCursor = () => {
-    console.log("restore")
     if (!elementRef?.current) return;
     MOM.Editor.restoreCursor(elementRef.current, cursorRef.current);
   };
