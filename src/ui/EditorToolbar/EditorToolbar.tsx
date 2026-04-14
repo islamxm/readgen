@@ -123,7 +123,7 @@ export const EditorToolbar = () => {
   };
 
   return (
-    <div className={"p-2 gap-2 flex flex-col border-r"}>
+    <div className={"p-2 gap-2 flex flex-col border-r min-h-0 overflow-auto"}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button

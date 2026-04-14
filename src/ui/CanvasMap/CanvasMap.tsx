@@ -31,7 +31,7 @@ export const CanvasMap = () => {
   return (
     <motion.div
       layout
-      className="flex flex-col gap-1 rounded-lg border h-full p-3 bg-white w-[250px]"
+      className="flex flex-col gap-1 rounded-lg border h-full p-3 bg-white w-[250px] overflow-auto min-h-0"
     >
       {rootOrder.length > 0 ? (
         rootOrder.map((nodeId) => <Block key={nodeId} nodeId={nodeId} />)
