@@ -124,10 +124,6 @@ export function removeNode(opt: {
   }
   const parentId = node.parentId;
 
-  console.log(parentId);
-
-  console.log(doc.nodes[parentId]);
-
   const siblings =
     parentId === null
       ? doc.rootOrder

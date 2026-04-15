@@ -34,6 +34,7 @@ import {
 import logo from "../../../public/logo.svg";
 import { useDocumentActions, useHistory } from "@/hooks";
 import { useUI } from "@/hooks";
+import { ExportMarkdownButton } from "@/features/export-markdown";
 
 export const TopToolbar = () => {
   const { undo, redo } = useHistory();
@@ -143,19 +144,7 @@ export const TopToolbar = () => {
           </div>
         </div>
         <div className="flex gap-1">
-          <Button variant={"outline"}>
-            <Download />
-            Export as .md
-          </Button>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button className="bg-blue-500 hover:bg-blue-900">
-                <Grid2X2Plus />
-                Download
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side={"bottom"}>Coming Soon</TooltipContent>
-          </Tooltip>
+          <ExportMarkdownButton/>
         </div>
       </div>
     </div>
