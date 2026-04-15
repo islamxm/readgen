@@ -40,13 +40,8 @@ export function useEditor<T extends HTMLElement>(
     if (parseType === "deep") {
       html = currentHtml.current ?? MOM.Serializer.momToHTML(children, node.id);
     }
-    // программная вставка не работает
-    if (parseType === "plain") {
-      let value = ref.current.textContent;
-      if("value" in node) {
-        value = node.value
-      }
-      html = value
+    if (parseType === "plain" && "value" in node) {
+      html = currentHtml.current ?? node.value ?? ref.current.textContent;
     }
     if (ref.current.innerHTML === html) return;
     ref.current.innerHTML = html;
@@ -126,7 +121,6 @@ export function useEditor<T extends HTMLElement>(
     if (!result) return;
     currentHtml.current = undefined;
     commitInlineEdit({ nodeId: node.id, nodes: result.nodes });
-    // restoreCursor();
   };
 
   /** очистка от браузерного мусора при каждом вводе и сохранение актуального состояния DOM в рефе */
