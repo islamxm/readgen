@@ -336,7 +336,7 @@ export const createNewBlockThunk = (): AppThunk => (dispatch, getState) => {
         documentStoreActions.insertNodes({
           ops: [
             { node: { ...listNode, id }, parentId: null, index },
-            { node: listItemNode, parentId: id },
+            { node: { ...listItemNode, parentId: id }, parentId: id },
           ],
         }),
       );

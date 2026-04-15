@@ -129,36 +129,35 @@ export function useListEditor(
     );
     shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true);
     shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true);
-    shortcut(
-      e.nativeEvent,
-      ["Backspace"],
-      () => {
-        const isEmpty = !ref.current?.textContent;
-        if (isEmpty) {
-          deleteItem();
-        }
-      },
-      true,
-    );
+    shortcut(e.nativeEvent, ["Backspace"], () => {
+      const isEmpty = !ref.current?.textContent;
+      if (isEmpty) {
+        e.preventDefault();
+        deleteItem();
+      }
+    });
 
     // два модификатора без обычной key функция shortcut не поддерживает, надо доработать
     if (e.code === "Enter" && e.shiftKey) {
       e.preventDefault();
+      save();
       createItem();
       return;
     }
     // одиночные обычные key тоже не поддерживаются shortcut
     if (e.code === "ArrowUp") {
+      save();
       focusItem(index - 1);
       return;
     }
     if (e.code === "ArrowDown") {
+      save();
       focusItem(index + 1);
       return;
     }
 
     globalShortcutsList.forEach(([_, value]) =>
-      shortcut(e.nativeEvent, value, save),
+      shortcut(e.nativeEvent, value, save, true),
     );
   };
 

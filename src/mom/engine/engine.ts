@@ -124,7 +124,10 @@ export function removeNode(opt: {
   }
   const parentId = node.parentId;
 
-  // тут специально берем список ВКЛЮЧАЯ самого элемента чтобы логика не ломалась, наверное стоит создать отдельный selector именно для этого случая
+  console.log(parentId);
+
+  console.log(doc.nodes[parentId]);
+
   const siblings =
     parentId === null
       ? doc.rootOrder
@@ -214,9 +217,6 @@ export function updateNode(opt: {
   ) as Partial<MOMAllContent>;
 
   const newDoc = produce(doc, (draft) => {
-    //какой то бред поэтому пока не разберемся оставим так
-    // JSON.stringify(draft.nodes[nodeId])
-    // Object.assign(draft.nodes[nodeId], patch);
     // @ts-ignore
     draft.nodes[nodeId] = { ...draft.nodes[nodeId], ...patch };
   });
@@ -572,7 +572,6 @@ export function invertOp(op: MOMOperation): MOMOperation {
   }
 }
 
-// используется в качестве namespace для уменьшения когнитивной нагрузки, можно было просто создать ts-namespace но это насколько я понял устаревший подход
 export const Engine = {
   insertNode,
   insertNodes,
