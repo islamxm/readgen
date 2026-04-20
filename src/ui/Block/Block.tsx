@@ -40,34 +40,6 @@ export const Block: FC<Props> = ({ nodeId }) => {
 
   const typeCssClass = MOM.Editor.getCssClassByNode(node);
 
-  // return (
-  //   <div data-block data-id={nodeId} className={clsx(typeCssClass, classes.wrapper, 'flex gap-[5px]')}>
-  //     <div
-  //       onClick={select}
-  //       className={clsx(
-  //         `rounded-sm border border-solid w-full outline-[4px]`,
-  //         !blockHighlighting && classes.highlight_disabled,
-  //         isSelected && classes.selected,
-  //       )}
-  //       style={
-  //         blockHighlighting
-  //           ? {
-  //               backgroundColor: bg,
-  //               borderColor: text,
-  //               borderStyle: 'solid',
-  //               outlineColor: isSelected ? border : 'transparent',
-  //             }
-  //           : { outline: `1px dashed ${text}`, border: 'none' }
-  //       }
-  //     >
-  //       {renderer(node)}
-  //     </div>
-  //     <Button data-drag variant={'outline'} size={'icon'} className={classes.drag_button}>
-  //       <Grip />
-  //     </Button>
-  //   </div>
-  // );
-
   return (
     <ContextMenu>
       <ContextMenuTrigger>

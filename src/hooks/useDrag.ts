@@ -17,7 +17,6 @@ const createPortal = () => {
   mask.style.background = "transparent";
   mask.style.zIndex = "999";
   mask.style.pointerEvents = "auto";
-  // document.body.style.userSelect = 'none';
 
   portal.classList.add(BODY_CSS_CLASS);
 
@@ -60,6 +59,7 @@ export function useDrag_proto() {
     index: number;
     initialBounds: Rect;
   }>(null);
+  const dragButton = useRef<HTMLElement>(null);
 
   const portal = useRef<HTMLDivElement>(null);
   const mask = useRef<HTMLDivElement>(null);
@@ -72,9 +72,10 @@ export function useDrag_proto() {
 
   const startDrag = (e: PointerEvent) => {
     if (!(e.target instanceof HTMLElement && e.target.closest(DRAG_BUTTON_DOM_SELECTOR))) return;
-    const dragButton = e.target.closest(DRAG_BUTTON_DOM_SELECTOR);
-    if (dragButton instanceof HTMLElement) {
-      dragButton.style.opacity = "1";
+    const dragBtn = e.target.closest(DRAG_BUTTON_DOM_SELECTOR);
+    if (dragBtn instanceof HTMLElement) {
+      dragButton.current = dragBtn;
+      dragButton.current.style.opacity = "1";
     }
     const targetEl = e.target.closest(DRAGGRABLE_ELEMENT_DOM_SELECTOR);
     if (!targetEl || !(targetEl instanceof HTMLElement)) return;
@@ -247,12 +248,16 @@ export function useDrag_proto() {
     if (blocks.current.length === 0 || !ghostBlockData.current) return;
     ghostBlockData.current.el.style.transition = `transform ${BLOCK_TRANSITION_DURATION}s ${BLOCK_TRANSITION_ANIM}`;
     ghostBlockData.current.el.style.transform = "translate3d(0,0,0)";
-    ghostBlockData.current.el.addEventListener("transitionend", (e) => {
-      if (e.propertyName !== "transform" || !originalBlockData.current) return;
+    ghostBlockData.current.el.addEventListener(
+      "transitionend",
+      (e) => {
+        if (e.propertyName !== "transform" || !originalBlockData.current) return;
         originalBlockData.current.el.style.opacity = "1";
         resetBlockTransforms();
         cleanUpAfterDrag();
-    }, {once: true});
+      },
+      { once: true },
+    );
   };
 
   const computeMarginCollapse = (mb: number, mt: number) => {
@@ -299,12 +304,14 @@ export function useDrag_proto() {
     portal.current?.remove();
     mask.current = null;
     blocks.current = [];
+    if (dragButton.current) {
+      dragButton.current.style.opacity = "0";
+      dragButton.current = null;
+    }
   };
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    // cleanUpAfterDrag();
 
     const ref = containerRef.current;
 
