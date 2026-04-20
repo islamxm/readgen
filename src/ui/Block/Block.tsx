@@ -1,32 +1,18 @@
-import classes from "./classes.module.scss";
-import type { FC } from "react";
-import { useNode } from "../../hooks";
-import { renderer } from "../renderer";
-import clsx from "clsx";
-import { getBlockColors } from "../tokens";
-import type { MOMBlockNodeType } from "../../mom/types";
-import {
-  Button,
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "../shared";
-import {
-  BrushCleaning,
-  Copy,
-  CopyX,
-  Grip,
-  SquareMousePointer,
-  SquareStack,
-} from "lucide-react";
-import { MOM } from "@/mom";
-import { useUI } from "@/hooks";
-import { useDocumentActions } from "@/hooks/useDocumentActions";
-import { useNodeSelection } from "@/hooks/useNodeSelection";
-import { useSelectionActions } from "@/hooks/useSelectionActions";
-import { toast } from "sonner";
+import classes from './classes.module.scss';
+import type { FC } from 'react';
+import { useNode } from '../../hooks';
+import { renderer } from '../renderer';
+import clsx from 'clsx';
+import { getBlockColors } from '../tokens';
+import type { MOMBlockNodeType } from '../../mom/types';
+import { Button, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '../shared';
+import { BrushCleaning, Copy, CopyX, Grip, SquareMousePointer, SquareStack } from 'lucide-react';
+import { MOM } from '@/mom';
+import { useUI } from '@/hooks';
+import { useDocumentActions } from '@/hooks/useDocumentActions';
+import { useNodeSelection } from '@/hooks/useNodeSelection';
+import { useSelectionActions } from '@/hooks/useSelectionActions';
+import { toast } from 'sonner';
 
 type Props = {
   nodeId: string;
@@ -54,13 +40,38 @@ export const Block: FC<Props> = ({ nodeId }) => {
 
   const typeCssClass = MOM.Editor.getCssClassByNode(node);
 
+  // return (
+  //   <div data-block data-id={nodeId} className={clsx(typeCssClass, classes.wrapper, 'flex gap-[5px]')}>
+  //     <div
+  //       onClick={select}
+  //       className={clsx(
+  //         `rounded-sm border border-solid w-full outline-[4px]`,
+  //         !blockHighlighting && classes.highlight_disabled,
+  //         isSelected && classes.selected,
+  //       )}
+  //       style={
+  //         blockHighlighting
+  //           ? {
+  //               backgroundColor: bg,
+  //               borderColor: text,
+  //               borderStyle: 'solid',
+  //               outlineColor: isSelected ? border : 'transparent',
+  //             }
+  //           : { outline: `1px dashed ${text}`, border: 'none' }
+  //       }
+  //     >
+  //       {renderer(node)}
+  //     </div>
+  //     <Button data-drag variant={'outline'} size={'icon'} className={classes.drag_button}>
+  //       <Grip />
+  //     </Button>
+  //   </div>
+  // );
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>
-        <div
-          data-block
-          className={clsx(typeCssClass, classes.wrapper, "flex gap-[5px]")}
-        >
+        <div data-block data-id={nodeId} className={clsx(typeCssClass, classes.wrapper, 'flex gap-[5px]')}>
           <div
             onClick={select}
             className={clsx(
@@ -73,20 +84,15 @@ export const Block: FC<Props> = ({ nodeId }) => {
                 ? {
                     backgroundColor: bg,
                     borderColor: text,
-                    borderStyle: "solid",
-                    outlineColor: isSelected ? border : "transparent",
+                    borderStyle: 'solid',
+                    outlineColor: isSelected ? border : 'transparent',
                   }
-                : { outline: `1px dashed ${text}`, border: "none" }
+                : { outline: `1px dashed ${text}`, border: 'none' }
             }
           >
             {renderer(node)}
           </div>
-          <Button
-            data-drag
-            variant={"outline"}
-            size={"icon"}
-            className={classes.drag_button}
-          >
+          <Button data-drag variant={'outline'} size={'icon'} className={classes.drag_button}>
             <Grip />
           </Button>
         </div>
@@ -98,7 +104,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
         <ContextMenuItem
           onClick={() => {
             copyNode(node);
-            toast.success("Block is copied");
+            toast.success('Block is copied');
           }}
         >
           <Copy /> Copy Block
@@ -110,10 +116,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
           <SquareStack /> Select all
         </ContextMenuItem>
         <ContextMenuSeparator />
-        <ContextMenuItem
-          onClick={() => removeNode(nodeId)}
-          variant={"destructive"}
-        >
+        <ContextMenuItem onClick={() => removeNode(nodeId)} variant={'destructive'}>
           <CopyX /> Delete Block
         </ContextMenuItem>
       </ContextMenuContent>
