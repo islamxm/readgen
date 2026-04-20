@@ -16,13 +16,7 @@ button {
   cursor: pointer;
 }
 .hatching {
-  background-image: repeating-linear-gradient(
-    45deg,
-    #8ec5ff,
-    #8ec5ff 1px,
-    transparent 1px,
-    transparent 7px
-  );
+  background-image: repeating-linear-gradient(45deg, #8ec5ff, #8ec5ff 1px, transparent 1px, transparent 7px);
   background-color: #eff6fd;
 }
 
@@ -74,4 +68,23 @@ h6[data-type="heading"] {
 }
 [data-type="blockquote"] {
   min-height: 1.6em;
+}
+
+@keyframes shimmer {
+  0%,
+  50% {
+    background-position: 150% center;
+  }
+  100% {
+    background-position: -50% center;
+  }
+}
+
+.shimmer-text {
+  background: linear-gradient(45deg, white 45%, #A8D4FF 50%, white 60%);
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
 }
