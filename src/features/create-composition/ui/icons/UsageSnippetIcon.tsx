@@ -1,0 +1,9 @@
+export const UsageSnippetIcon = () => {
+  return (
+    <svg style={{width: "100%", height: "100%"}} width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="50" height="13.0435" rx="3" fill="#BBEED5" />
+      <rect y="16.3043" width="50" height="15.2174" rx="3" fill="#FDDCB0" />
+      <rect y="34.7826" width="50" height="15.2174" rx="3" fill="#C7D3FA" />
+    </svg>
+  );
+};

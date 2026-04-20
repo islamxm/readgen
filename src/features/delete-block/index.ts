@@ -1,0 +1,1 @@
+export { DeleteBlockIconButton } from "./ui/DeleteBlockIconButton/DeleteBlockIconButton";

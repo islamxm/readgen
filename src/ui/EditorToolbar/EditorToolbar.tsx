@@ -1,14 +1,5 @@
 import { useDocumentActions } from "@/hooks/useDocumentActions";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../shared";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Tooltip, TooltipContent, TooltipTrigger } from "../shared";
 import { MOM } from "@/mom";
 import type { MOMAlert, MOMHeading } from "@/mom/types";
 import {
@@ -34,17 +25,11 @@ import {
   Puzzle,
 } from "lucide-react";
 import { useSelectionActions } from "@/hooks/useSelectionActions";
-import { useCompositions } from "@/hooks";
+import { CompositionMenuButton } from "@/features/create-composition";
 
 export const EditorToolbar = () => {
   const { insertNode, insertNodes } = useDocumentActions();
   const { selectAndFocusNode } = useSelectionActions();
-  const {
-    createProjectHeroComposition,
-    createQuickInstallComposition,
-    createFeatureShowcaseComposition,
-    createUsageSnippetComposition,
-  } = useCompositions();
 
   const addParagraph = () => {
     const node = MOM.Engine.createParagraph();
@@ -131,39 +116,10 @@ export const EditorToolbar = () => {
 
   return (
     <div className={"p-2 gap-2 flex flex-col border-r min-h-0 overflow-auto"}>
-      <Tooltip>
-        <DropdownMenu>
-          <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
-              <Button size={"icon"} className="bg-blue-500 hover:bg-blue-900">
-                <Puzzle />
-              </Button>
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          <TooltipContent side={"right"}>Compositions</TooltipContent>
-          <DropdownMenuContent side={"right"}>
-            <DropdownMenuItem onClick={createProjectHeroComposition}>
-              Project Hero
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={createQuickInstallComposition}>
-              Quick Install
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={createFeatureShowcaseComposition}>
-              Feature Showcase
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={createUsageSnippetComposition}>
-              Usage Snippet
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </Tooltip>
+      <CompositionMenuButton />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(1)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(1)}>
             <Heading1 />
           </Button>
         </TooltipTrigger>
@@ -171,11 +127,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(2)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(2)}>
             <Heading2 />
           </Button>
         </TooltipTrigger>
@@ -183,11 +135,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(3)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(3)}>
             <Heading3 />
           </Button>
         </TooltipTrigger>
@@ -195,11 +143,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(4)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(4)}>
             <Heading4 />
           </Button>
         </TooltipTrigger>
@@ -207,11 +151,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(5)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(5)}>
             <Heading5 />
           </Button>
         </TooltipTrigger>
@@ -219,11 +159,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addHeading(6)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addHeading(6)}>
             <Heading6 />
           </Button>
         </TooltipTrigger>
@@ -231,7 +167,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addParagraph}>
+          <Button variant={"outline"} size={"icon"} onClick={addParagraph}>
             P
           </Button>
         </TooltipTrigger>
@@ -239,7 +175,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addBlockquote}>
+          <Button variant={"outline"} size={"icon"} onClick={addBlockquote}>
             <Quote />
           </Button>
         </TooltipTrigger>
@@ -249,7 +185,7 @@ export const EditorToolbar = () => {
         <DropdownMenu>
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
-              <Button variant={"secondary"} size={"icon"}>
+              <Button variant={"outline"} size={"icon"}>
                 <AlertCircle />
               </Button>
             </DropdownMenuTrigger>
@@ -276,7 +212,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addCode}>
+          <Button variant={"outline"} size={"icon"} onClick={addCode}>
             <Code2 />
           </Button>
         </TooltipTrigger>
@@ -284,11 +220,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            onClick={() => addList(true)}
-          >
+          <Button variant={"outline"} size={"icon"} onClick={() => addList(true)}>
             <ListOrdered />
           </Button>
         </TooltipTrigger>
@@ -296,7 +228,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={() => addList()}>
+          <Button variant={"outline"} size={"icon"} onClick={() => addList()}>
             <List />
           </Button>
         </TooltipTrigger>
@@ -304,7 +236,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addBreak}>
+          <Button variant={"outline"} size={"icon"} onClick={addBreak}>
             <SeparatorHorizontal />
           </Button>
         </TooltipTrigger>
@@ -312,7 +244,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addImage}>
+          <Button variant={"outline"} size={"icon"} onClick={addImage}>
             <Image />
           </Button>
         </TooltipTrigger>
@@ -320,7 +252,7 @@ export const EditorToolbar = () => {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"secondary"} size={"icon"} onClick={addRaw}>
+          <Button variant={"outline"} size={"icon"} onClick={addRaw}>
             <Braces />
           </Button>
         </TooltipTrigger>

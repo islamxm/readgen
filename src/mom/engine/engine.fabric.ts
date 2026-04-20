@@ -120,12 +120,13 @@ export function createThematicBreak(
 export function createText(
   value: string = "",
   parentId: string | null = null,
+  marks: MOMText["marks"] = {}
 ): MOMText {
   return {
     ...base(parentId),
     type: "text",
     value,
-    marks: {},
+    marks,
   };
 }
 

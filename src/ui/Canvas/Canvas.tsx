@@ -17,7 +17,7 @@ export const Canvas = () => {
       <LinkTooltip addUrl={addLink} containerRef={ref as any} />
       <div
         ref={ref}
-        className="rounded-lg border h-full flex-1 p-2 bg-white overflow-auto min-h-0"
+        className="rounded-lg border h-full flex-1 p-2 pt-[20px] bg-white overflow-auto min-h-0"
       >
         <div ref={containerRef} className="markdown-body pb-[50vh]">
           {rootOrder.map((nodeId) => (

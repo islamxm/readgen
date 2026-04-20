@@ -1,0 +1,11 @@
+export const FeatureShowcaseIcon = () => {
+  return (
+    <svg style={{width: "100%", height: "100%"}} width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="50" height="20" rx="3" fill="#BBEED5" />
+      <rect y="25" width="50" height="5" rx="2.5" fill="#FDDFA0" />
+      <rect y="31.6667" width="50" height="5" rx="2.5" fill="#FDDFA0" />
+      <rect y="38.3333" width="50" height="5" rx="2.5" fill="#FDDFA0" />
+      <rect y="45" width="50" height="5" rx="2.5" fill="#FDDFA0" />
+    </svg>
+  );
+};

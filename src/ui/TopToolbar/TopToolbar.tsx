@@ -56,10 +56,10 @@ export const TopToolbar = () => {
               <FilePlus />
               New File
             </Button>
-            <Button onClick={undo} variant={"secondary"} size={"icon"}>
+            <Button onClick={undo} variant={"outline"} size={"icon"}>
               <Undo2 />
             </Button>
-            <Button onClick={redo} variant={"secondary"} size={"icon"}>
+            <Button onClick={redo} variant={"outline"} size={"icon"}>
               <Redo2 />
             </Button>
           </div>
