@@ -90,3 +90,4 @@ export {
   TabsContent,
   tabsListVariants,
 } from "./tabs";
+export { Logo } from "./logo";

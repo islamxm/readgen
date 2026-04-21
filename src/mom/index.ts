@@ -6,6 +6,7 @@ import { Serializer } from "./serializer/serializer";
 import { Parser } from "./parser/parser";
 import { Editor } from "./editor/editor";
 import { Export } from "./export/export";
+import { Storage } from "./storage/storage";
 
 export const MOM = {
   Engine,
@@ -15,5 +16,6 @@ export const MOM = {
   Serializer,
   Parser,
   Editor,
-  Export
+  Export,
+  Storage
 } as const;

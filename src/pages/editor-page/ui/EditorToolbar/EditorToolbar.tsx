@@ -124,7 +124,7 @@ export const EditorToolbar = () => {
   };
 
   return (
-    <div className={"p-2 gap-2 flex flex-col border-r min-h-0 overflow-auto"}>
+    <div className={"p-2 gap-2 flex flex-col border-r min-h-0 overflow-auto bg-white rounded-lg"}>
       <CompositionMenuButton />
       <Tooltip>
         <TooltipTrigger asChild>
