@@ -1,4 +1,4 @@
-import { useImage, useNode } from "@/hooks";
+import { useNode } from "@/hooks";
 import { MOM } from "@/mom";
 import type { MOMImage } from "@/mom/types";
 import { useState, type FC } from "react";
@@ -11,6 +11,7 @@ import {
   Spinner,
 } from "@shared/ui";
 import { Check, Link, MoreVertical, Trash2, XIcon } from "lucide-react";
+import { useImage } from "../../lib/useImage";
 
 type Props = {
   nodeId: string;

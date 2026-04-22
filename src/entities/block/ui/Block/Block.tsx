@@ -1,18 +1,17 @@
 import classes from "./classes.module.scss";
 import type { FC } from "react";
-import { useNode } from "../../hooks";
-import { renderer } from "../renderer";
 import clsx from "clsx";
-import { getBlockColors } from "../tokens";
-import type { MOMBlockNodeType } from "../../mom/types";
 import { Button, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from "@shared/ui";
 import { BrushCleaning, Copy, CopyX, Grip, SquareMousePointer, SquareStack } from "lucide-react";
 import { MOM } from "@/mom";
-import { useUI } from "@/hooks";
+import { useNode, useUI } from "@/hooks";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useNodeSelection } from "@/hooks/useNodeSelection";
 import { useSelectionActions } from "@/hooks/useSelectionActions";
 import { toast } from "sonner";
+import { getBlockColors } from "../../lib/getBlockColors";
+import type { MOMBlockNodeType } from "@/mom/types";
+import { renderer } from "../../lib/renderer";
 
 type Props = {
   nodeId: string;

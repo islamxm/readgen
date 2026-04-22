@@ -1,16 +1,14 @@
-import { MOM } from "../mom";
-import type { MOMAllContent, MOMBlockNode } from "../mom/types";
-import {
-  ListNode,
-  ThematicBreakNode,
-  ParagraphNode,
-  HeadingNode,
-  CodeNode,
-  ImageNode,
-  RawNode,
-  BlockquoteNode,
-  AlertNode,
-} from "./blocks";
+import { MOM } from "@/mom";
+import type { MOMAllContent, MOMBlockNode } from "@/mom/types";
+import { ParagraphNode } from "../ui/ParagraphNode/ParagraphNode";
+import { HeadingNode } from "../ui/HeadingNode/HeadingNode";
+import { ListNode } from "../ui/ListNode/ListNode";
+import { BlockquoteNode } from "../ui/BlockquoteNode/BlockquoteNode";
+import { AlertNode } from "../ui/AlertNode/AlertNode";
+import { CodeNode } from "../ui/CodeNode/CodeNode";
+import { ImageNode } from "../ui/ImageNode/ImageNode";
+import { RawNode } from "../ui/RawNode/RawNode";
+import { ThematicBreakNode } from "../ui/ThematicBreakNode/ThematicBreakNode";
 
 /** Основная функци рендерер */
 export function renderer(node: MOMAllContent) {

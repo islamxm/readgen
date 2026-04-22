@@ -1,9 +1,7 @@
 import { useRef } from "react";
-import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useDrag } from "@/hooks/useDrag";
-import { useDocument, useDocumentShortcuts } from "@/hooks";
-import { LinkTooltip } from "@/ui/LinkTooltip/LinkTooltip";
-import { Block } from "@/ui/Block/Block";
+import { useDocument, useDocumentShortcuts, useDocumentActions } from "@/hooks";
+import { Block, LinkTooltip } from "@entities/block";
 
 export const Canvas = () => {
   const { rootOrder } = useDocument();

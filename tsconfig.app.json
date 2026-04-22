@@ -30,6 +30,7 @@
       "@pages/*": ["./src/pages/*"],
       "@features/*": ["./src/features/*"],
       "@shared/*": ["./src/shared/*"],
+      "@entities/*": ["./src/entities/*"],
     }
   },
   "include": ["src", "global.d.ts"]

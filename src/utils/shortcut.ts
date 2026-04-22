@@ -1,7 +1,4 @@
-type Combination =
-  | readonly [ModCode, ModCode, KeyCode]
-  | readonly [ModCode, KeyCode]
-  | readonly [KeyCode];
+type Combination = readonly [ModCode, ModCode, KeyCode] | readonly [ModCode, KeyCode] | readonly [KeyCode];
 
 /**
  *
@@ -10,12 +7,7 @@ type Combination =
  * @param {(...args:any[]) => void} callback - Функция которая выполнится при выполнении условии
  * @param {boolean} preventDefault - нужно ли сделать e.preventDefault()
  */
-export function shortcut(
-  e: KeyboardEvent,
-  combination: Combination,
-  callback?: (...args: any[]) => any,
-  preventDefault?: boolean,
-) {
+export function shortcut(e: KeyboardEvent, combination: Combination, callback?: (...args: any[]) => any, preventDefault?: boolean) {
   const key = combination[combination.length - 1] as KeyCode;
   const mods = combination.slice(0, combination.length - 1) as Array<ModCode>;
 
@@ -106,6 +98,7 @@ export const GlobalShortcuts = {
   DELETE_SELECTED_BLOCKS: ["Shift", "Ctrl", "Backspace"],
   UNDO: ["Ctrl", "Z"],
   REDO_LEGACY: ["Ctrl", "Y"],
+  SAVE_DOCUMENT: ["Ctrl", "S"],
   SELECT_PREV_BLOCK: ["Shift", "Tab"],
   SELECT_NEXT_BLOCK: ["Tab"],
   CREATE_NEW_BLOCK: ["Enter"],

@@ -6,17 +6,11 @@ export const Sidebar = () => {
   const nav = useNavigate();
   return (
     <div className="bg-white min-h-0 flex flex-col rounded-lg w-[250px] gap-[10px] p-[15px]">
-      <Button onClick={() => nav("/editor")} variant={"outline"}>
+      <Button onClick={() => nav("/editor")}>
         <Plus /> New Document
       </Button>
       <Button variant={"outline"}>
         <Files /> All Documents
-      </Button>
-      <Button variant={"outline"}>
-        <Heart /> Favorites
-      </Button>
-      <Button variant={"outline"}>
-        <Bookmark /> Pinned
       </Button>
     </div>
   );

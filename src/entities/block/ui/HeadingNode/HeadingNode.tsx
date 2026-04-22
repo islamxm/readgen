@@ -1,6 +1,7 @@
+import { useNode } from "@/hooks";
 import type { FC } from "react";
-import { useEditor, useNode } from "../../hooks";
-import { MOM } from "../../mom";
+import { useEditor } from "../../lib/useEditor";
+import { MOM } from "@/mom";
 
 type TagType = React.ElementType<
   React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }

@@ -79,10 +79,17 @@ h6[data-type="heading"] {
 }
 
 .shimmer-text {
-  background: linear-gradient(45deg, white 45%, #A8D4FF 50%, white 60%);
+  background: linear-gradient(45deg, white 45%, #a8d4ff 50%, white 60%);
   background-size: 300% auto;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   animation: shimmer 4s linear infinite;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

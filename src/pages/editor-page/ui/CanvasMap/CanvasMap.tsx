@@ -1,10 +1,10 @@
 import { useDocument, useNode } from "@/hooks";
 import type { MOMAllContent, MOMBlockNodeType } from "@/mom/types";
 import { motion } from "motion/react";
-import { useSelectionActions } from "@/hooks/useSelectionActions";
+import { useSelectionActions } from "@/hooks";
 import clsx from "clsx";
 import { useRef } from "react";
-import { getBlockColors } from "@/ui/tokens";
+import { getBlockColors } from "@entities/block";
 
 const getValueForBlockVisualHeight = (node: MOMAllContent) => {
   const id = node.id;

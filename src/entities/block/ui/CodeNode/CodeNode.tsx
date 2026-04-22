@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FC } from "react";
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useNode, useUI } from "../../hooks";
-import { MOM } from "../../mom";
-import type { MOMCode } from "../../mom/types";
 import {
   Button,
   Select,
@@ -16,12 +13,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@shared/ui";
-import { getBlockColors } from "../tokens";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useNodeSelection } from "@/hooks/useNodeSelection";
 import clsx from "clsx";
+import { useNode, useUI } from "@/hooks";
+import type { MOMCode } from "@/mom/types";
+import { MOM } from "@/mom";
+import { getBlockColors } from "../../lib/getBlockColors";
 
 type Props = {
   nodeId: string;

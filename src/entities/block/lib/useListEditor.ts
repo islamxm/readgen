@@ -1,11 +1,8 @@
 import { useRef, type HTMLProps, useEffect } from "react";
-import { MOM } from "../mom";
-import type { MOMAllContent, MOMTextMarks } from "../mom/types";
-import { useCursor } from "./useCursor";
-import { useDocumentActions } from "./useDocumentActions";
-import { useSelectionActions } from "./useSelectionActions";
-import { useNodeSelection } from "./useNodeSelection";
 import { GlobalShortcuts, shortcut } from "@/utils/shortcut";
+import type { MOMAllContent, MOMTextMarks } from "@/mom/types";
+import { useCursor, useDocumentActions, useNodeSelection, useSelectionActions } from "@/hooks";
+import { MOM } from "@/mom";
 
 const globalShortcutsList = Object.entries(GlobalShortcuts);
 

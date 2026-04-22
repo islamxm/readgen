@@ -1,7 +1,9 @@
+import { useChildren, useNode } from "@/hooks";
 import { type FC } from "react";
-import { useChildren, useListEditor, useNode } from "../../hooks";
-import { MOM } from "../../mom";
+import { useListEditor } from "../../lib/useListEditor";
+import { MOM } from "@/mom";
 import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
+
 
 type Props = {
   nodeId: string;

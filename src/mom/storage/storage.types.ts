@@ -5,7 +5,6 @@ export type Document = {
   title: string;
   thumbnail: Blob | null;
   lastModified: number; //timestamp in ms
-  version: number;
 
   isFavorite: boolean;
   isDisabled: boolean;

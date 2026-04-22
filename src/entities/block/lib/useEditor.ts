@@ -1,14 +1,10 @@
 import { useEffect, useRef, type HTMLProps } from "react";
-import { MOM } from "../mom";
-import type { MOMAllContent, MOMTextMarks } from "../mom/types";
-import { useCursor } from "./useCursor";
-import { useDocumentActions } from "./useDocumentActions";
-import { useChildren } from "./useChildren";
-import { useSelectionActions } from "./useSelectionActions";
-import { useNodeSelection } from "./useNodeSelection";
-import { GlobalShortcuts, shortcut } from "@/utils/shortcut";
+import { shortcut } from "@/utils/shortcut";
+import type { MOMAllContent, MOMTextMarks } from "@/mom/types";
+import { useChildren, useCursor, useDocumentActions, useNodeSelection, useSelectionActions } from "@/hooks";
+import { MOM } from "@/mom";
 
-const globalShortcutsList = Object.entries(GlobalShortcuts);
+// const globalShortcutsList = Object.entries(GlobalShortcuts);
 
 /**
  * text - если разрешен только сырой текст (ex: h1,h2,...)
@@ -101,11 +97,6 @@ export function useEditor<T extends HTMLElement>(
 
   /** обработка действий которые идут через клавишу */
   const onKeyboardEvent = (e: React.KeyboardEvent) => {
-
-    // const isGlobalShortcut = globalShortcutsList.some(([_,value]) => shortcut(e.nativeEvent, value, save))
-
-    // if(isGlobalShortcut) return;
-
     shortcut(e.nativeEvent, ["Ctrl", "U"], () => applyFormat("lineThrough"), true);
     shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true)
     shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true)

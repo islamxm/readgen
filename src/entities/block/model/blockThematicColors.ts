@@ -1,4 +1,4 @@
-import type { MOMBlockNodeType } from "../mom/types";
+import type { MOMBlockNodeType } from "@/mom/types";
 
 type ThematicColor = { bg: string; border: string; text: string };
 
@@ -11,9 +11,5 @@ export const BLOCK_THEMATIC_COLORS: Record<MOMBlockNodeType, ThematicColor> = {
   list: { bg: "#FFF8ED", border: "#FDDFA0", text: "#F5C97A" },
   image: { bg: "#F5F5F4", border: "#E7E5E4", text: "#A8A29E" },
   thematicBreak: { bg: "transparent", border: "#E0DED8", text: "transparent" },
-  raw: { bg: "#E8F8FA", border: "#B8E6EC", text: "#73C7D4" }
+  raw: { bg: "#E8F8FA", border: "#B8E6EC", text: "#73C7D4" },
 };
-
-export function getBlockColors(nodeType: MOMBlockNodeType) {
-  return BLOCK_THEMATIC_COLORS[nodeType];
-}

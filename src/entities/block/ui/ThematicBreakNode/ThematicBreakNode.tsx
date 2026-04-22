@@ -1,7 +1,7 @@
 import { type FC } from "react";
-import { useNode } from "../../hooks";
-import { MOM } from "../../mom";
-import { useSelectionActions } from "@/hooks/useSelectionActions";
+import { useSelectionActions } from "@/hooks";
+import { useNode } from "@/hooks";
+import { MOM } from "@/mom";
 
 type Props = {
   nodeId: string;

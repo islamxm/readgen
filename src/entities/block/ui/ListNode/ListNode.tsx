@@ -1,8 +1,8 @@
 import { useRef, type FC } from "react";
-import { useChildren, useNode } from "../../hooks";
-import { MOM } from "../../mom";
-import { ListItemNode } from "../inlines";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
+import { useChildren, useNode } from "@/hooks";
+import { MOM } from "@/mom";
+import { ListItemNode } from "../ListItemNode/ListItemNode";
 
 type Props = {
   nodeId: string;

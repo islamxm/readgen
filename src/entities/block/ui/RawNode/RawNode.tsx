@@ -1,7 +1,4 @@
 import { type FC } from "react";
-import { useRaw, useNode } from "../../hooks";
-import { MOM } from "../../mom";
-import type { MOMRaw } from "../../mom/types";
 import { AppWindowIcon, CodeIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@shared/ui";
 import Textarea from "react-textarea-autosize";
@@ -13,6 +10,10 @@ import shadow from "react-shadow";
 
 import gfmRawCssString from "@/styles/gfm-raw.scss?inline";
 import gfmRawCssFixesString from "@/styles/gfm-raw-fixes.scss?inline";
+import { useNode } from "@/hooks";
+import { useRaw } from "../../lib/useRaw";
+import type { MOMRaw } from "@/mom/types";
+import { MOM } from "@/mom";
 
 type Props = {
   nodeId: string;
