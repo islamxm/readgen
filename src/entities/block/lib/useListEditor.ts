@@ -18,7 +18,7 @@ export function useListEditor(
   const { commitInlineEdit } = useDocumentActions();
   const { focuseNode, blur } = useSelectionActions();
   const { isFocused: isListItemFocused } = useNodeSelection(nodeId);
-  const { isSelected: isListSelected} = useNodeSelection(listNodeId)
+  const { isSelected: isListSelected } = useNodeSelection(listNodeId);
   const ref = useRef<HTMLLIElement>(null);
   const { saveCursor, restoreCursor } = useCursor<HTMLLIElement>(ref);
 
@@ -31,17 +31,16 @@ export function useListEditor(
     // }
   }, [children, nodeId, restoreCursor]);
 
-
   useEffect(() => {
+    if(!ref.current) return;
     
-  }, [isListFocused])
-
+  }, [isListItemFocused, isListSelected]);
 
   const save = () => {
     if (!ref.current) return;
     const nodes = MOM.Parser.domToMom(ref.current);
     const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(
-      MOM.Serializer.momToHTML(MOM.Parser.domToMom(ref.current), nodeId),
+      MOM.Serializer.momToHTML(children, nodeId),
       MOM.Serializer.momToHTML(nodes, nodeId),
     );
     if (canSkipUpdate) return;
@@ -50,6 +49,7 @@ export function useListEditor(
 
   /** при отключении фокуса предварительно сохраняем результат*/
   const onBlur = () => {
+    console.log("blur");
     save();
     blur();
     if (ref.current) {
@@ -57,9 +57,8 @@ export function useListEditor(
     }
   };
 
-  /** при клике на блок гарантированно фиксируем в сторе*/
-  const onSelectBlock = () => {
-    focuseNode(listNodeId);
+  const onFocus = () => {
+    // focuseNode(nodeId);
   };
 
   const applyFormat = (format: keyof MOMTextMarks) => {
@@ -132,15 +131,14 @@ export function useListEditor(
       createItem();
       return;
     }
-    if(e.code === "Tab" && e.shiftKey) {
+    if (e.code === "Tab" && e.shiftKey) {
+      return;
+    }
+    if (e.code === "Tab") {
+      //
+      return;
+    }
 
-      return;
-    }
-    if(e.code === "Tab") {
-      // 
-      return;
-    }
-    
     // одиночные обычные key тоже не поддерживаются shortcut
     // if (e.code === "ArrowUp") {
     //   save();
@@ -154,11 +152,11 @@ export function useListEditor(
     // }
   };
 
-  useEffect(() => {
-    if (isFocused && index === 0) {
-      ref.current?.focus();
-    }
-  }, [index, isFocused]);
+  // useEffect(() => {
+  //   if (isFocused && index === 0) {
+  //     ref.current?.focus();
+  //   }
+  // }, [index, isFocused]);
 
   const editorProps: HTMLProps<HTMLLIElement> = {
     contentEditable: true,
@@ -166,10 +164,10 @@ export function useListEditor(
     onBlur,
     onKeyDown: onKeyboardEvent,
     onInput,
-    onClick: onSelectBlock,
     tabIndex: -1,
     spellCheck: false,
     onPaste,
+    onFocus,
   };
 
   return {

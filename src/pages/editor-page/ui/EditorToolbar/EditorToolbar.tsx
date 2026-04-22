@@ -38,7 +38,7 @@ import { CompositionMenuButton } from "@/features/create-composition";
 
 export const EditorToolbar = () => {
   const { insertNode, insertNodes } = useDocumentActions();
-  const { selectAndFocusNode } = useSelectionActions();
+  const { selectAndFocusNode, focuseNode, selectNode } = useSelectionActions();
 
   const addParagraph = () => {
     const node = MOM.Engine.createParagraph();
@@ -93,7 +93,9 @@ export const EditorToolbar = () => {
       { node: listNode, parentId: null },
       { node: listItemNode, parentId: listNode.id, index: 0 },
     ]);
-    selectAndFocusNode(listNode.id);
+    
+    selectNode(listNode.id);
+    focuseNode(listItemNode.id);
   };
 
   const addImage = () => {

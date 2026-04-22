@@ -1,6 +1,6 @@
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
-import { useChildren, useNode } from "@/hooks";
+import { useChildren, useNode, useNodeSelection, useSelectionActions } from "@/hooks";
 import { MOM } from "@/mom";
 import { ListItemNode } from "../ListItemNode/ListItemNode";
 
@@ -14,6 +14,15 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
   const children = useChildren(nodeId);
   const isValidNode = MOM.Guard.isListNode(node);
   const listRef = useRef<HTMLOListElement & HTMLUListElement>(null);
+  const { isSelected, isFocused } = useNodeSelection(nodeId);
+  const { focuseNode } = useSelectionActions();
+
+  // useEffect(() => {
+  //   if (isSelected && isFocused && children.length > 0) {
+  //     const lastListItemId = children[children.length - 1].id;
+  //     focuseNode(lastListItemId);
+  //   }
+  // }, [isSelected, isFocused, focuseNode, children]);
 
   if (!isValidNode) return null;
 
@@ -57,12 +66,7 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
   };
 
   return (
-    <Tag
-      ref={listRef}
-      data-id={node.id}
-      data-type={node.type}
-      data-parent-id={node.parentId ?? ""}
-    >
+    <Tag ref={listRef} data-id={node.id} data-type={node.type} data-parent-id={node.parentId ?? ""}>
       {children.map((childNode, childIndex) => (
         <ListItemNode
           key={childNode.id}

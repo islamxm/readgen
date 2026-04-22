@@ -4,7 +4,9 @@ import type { AppThunk } from "../config";
 import { MOM } from "@/mom";
 
 type InitialState = {
+  // выбранный блок
   selectedIds: Array<string>;
+  // редактируемый блок
   focusedId: string | null;
 };
 
