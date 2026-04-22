@@ -6,8 +6,15 @@ type Combination = readonly [ModCode, ModCode, KeyCode] | readonly [ModCode, Key
  * @param {Combination} combination - Комбинация нажатых клавиш в виде кортежа
  * @param {(...args:any[]) => void} callback - Функция которая выполнится при выполнении условии
  * @param {boolean} preventDefault - нужно ли сделать e.preventDefault()
+ * @param {boolean} stopPropagation - нужно ли остановить всплытие e.stopPropagation()
  */
-export function shortcut(e: KeyboardEvent, combination: Combination, callback?: (...args: any[]) => any, preventDefault?: boolean) {
+export function shortcut(
+  e: KeyboardEvent,
+  combination: Combination,
+  callback?: (...args: any[]) => any,
+  preventDefault?: boolean,
+  stopPropagation?: boolean,
+) {
   const key = combination[combination.length - 1] as KeyCode;
   const mods = combination.slice(0, combination.length - 1) as Array<ModCode>;
 
@@ -22,6 +29,7 @@ export function shortcut(e: KeyboardEvent, combination: Combination, callback?: 
 
   if (modsMatch) {
     if (preventDefault) e.preventDefault();
+    if (stopPropagation) e.stopPropagation();
     callback?.();
     return true;
   }

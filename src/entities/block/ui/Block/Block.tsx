@@ -34,7 +34,6 @@ export const Block: FC<Props> = ({ nodeId }) => {
       addToSelect(nodeId);
     } else {
       selectNode(nodeId);
-      console.log("select node")
     }
   };
 

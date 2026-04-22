@@ -13,7 +13,8 @@ export function useListEditor(
   index: number,
   createItem?: any,
   deleteItem?: any,
-  focusItem?: any,
+  focusPrevItem?: (e: React.KeyboardEvent, index: number) => void,
+  focusNextItem?: (e: React.KeyboardEvent, index: number) => void,
 ) {
   const { commitInlineEdit } = useDocumentActions();
   const { focuseNode, blur } = useSelectionActions();
@@ -26,30 +27,31 @@ export function useListEditor(
     if (!ref.current) return;
     const html = MOM.Serializer.momToHTML(children, nodeId);
     ref.current.innerHTML = html;
-    // if (isFocused) {
-    //   restoreCursor();
-    // }
-  }, [children, nodeId, restoreCursor]);
+  }, [children, nodeId]);
 
   useEffect(() => {
-    if(!ref.current) return;
-    
+    if (!ref.current) return;
+    if (isListItemFocused) {
+      ref.current.focus();
+      restoreCursor();
+    }
+  }, [isListItemFocused, restoreCursor]);
+
+  useEffect(() => {
+    if (!ref.current) return;
   }, [isListItemFocused, isListSelected]);
 
   const save = () => {
     if (!ref.current) return;
+    saveCursor();
     const nodes = MOM.Parser.domToMom(ref.current);
-    const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(
-      MOM.Serializer.momToHTML(children, nodeId),
-      MOM.Serializer.momToHTML(nodes, nodeId),
-    );
+    const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(MOM.Serializer.momToHTML(children, nodeId), MOM.Serializer.momToHTML(nodes, nodeId));
     if (canSkipUpdate) return;
     commitInlineEdit({ nodeId, nodes });
   };
 
   /** при отключении фокуса предварительно сохраняем результат*/
   const onBlur = () => {
-    console.log("blur");
     save();
     blur();
     if (ref.current) {
@@ -58,7 +60,10 @@ export function useListEditor(
   };
 
   const onFocus = () => {
-    // focuseNode(nodeId);
+    setTimeout(() => {
+      saveCursor();
+      focuseNode(nodeId);
+    }, 0);
   };
 
   const applyFormat = (format: keyof MOMTextMarks) => {
@@ -79,7 +84,7 @@ export function useListEditor(
   const onPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, text);
+    MOM.Editor.pastePlainText(text);
     save();
   };
 
@@ -113,43 +118,31 @@ export function useListEditor(
     };
   }, []);
 
-  const onKeyboardEvent = (e: React.KeyboardEvent<HTMLLIElement>) => {
-    shortcut(e.nativeEvent, ["Ctrl", "U"], () => applyFormat("lineThrough"), true);
-    shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true);
-    shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true);
-    shortcut(e.nativeEvent, ["Backspace"], () => {
-      const isEmpty = !ref.current?.textContent;
-      if (isEmpty) {
-        e.preventDefault();
-        deleteItem();
-      }
-    });
-    // два модификатора без обычной key функция shortcut не поддерживает, надо доработать
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    shortcut(e.nativeEvent, ["Ctrl", "U"], () => applyFormat("lineThrough"), true, true);
+    shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true, true);
+    shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true, true);
+    shortcut(
+      e.nativeEvent,
+      ["Backspace"],
+      () => {
+        const isEmpty = !ref.current?.textContent;
+        if (isEmpty) {
+          e.preventDefault();
+          deleteItem();
+        }
+      },
+      false,
+      true,
+    );
+    //два модификатора не обрабатываются функцией shortcut
     if (e.code === "Enter" && e.shiftKey) {
       e.preventDefault();
-      save();
       createItem();
       return;
     }
-    if (e.code === "Tab" && e.shiftKey) {
-      return;
-    }
-    if (e.code === "Tab") {
-      //
-      return;
-    }
-
-    // одиночные обычные key тоже не поддерживаются shortcut
-    // if (e.code === "ArrowUp") {
-    //   save();
-    //   focusItem(index - 1);
-    //   return;
-    // }
-    // if (e.code === "ArrowDown") {
-    //   save();
-    //   focusItem(index + 1);
-    //   return;
-    // }
+    shortcut(e.nativeEvent, ["Shift", "Tab"], () => focusPrevItem?.(e, index), false, false);
+    shortcut(e.nativeEvent, ["Tab"], () => focusNextItem?.(e, index), false, false);
   };
 
   // useEffect(() => {
@@ -162,7 +155,7 @@ export function useListEditor(
     contentEditable: true,
     suppressContentEditableWarning: true,
     onBlur,
-    onKeyDown: onKeyboardEvent,
+    onKeyDown,
     onInput,
     tabIndex: -1,
     spellCheck: false,

@@ -406,6 +406,29 @@ export function shoulSkipUpdateState(prev: string, current: string) {
   return false;
 }
 
+export function pastePlainText(text: string) {
+  const selection = window.getSelection();
+  if (!selection || !selection.rangeCount) return;
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+  const textNode = document.createTextNode(text);
+  range.insertNode(textNode);
+  range.setStartAfter(textNode);
+  range.setEndAfter(textNode);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+export function setCursorToEnd(el: HTMLElement) {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  const selection = window.getSelection();
+  if(!selection || !selection.rangeCount) return;
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
 export const Editor = {
   applyFormat,
   isNothingSelected,
@@ -414,4 +437,6 @@ export const Editor = {
   restoreCursor,
   getCssClassByNode,
   shoulSkipUpdateState,
+  pastePlainText,
+  setCursorToEnd
 } as const;

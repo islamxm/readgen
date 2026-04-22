@@ -32,9 +32,7 @@ export const selectionSlice = createSlice({
       }
     },
     removeFromSelection: (state, action: PayloadAction<string>) => {
-      state.selectedIds = state.selectedIds.filter(
-        (id) => id !== action.payload,
-      );
+      state.selectedIds = state.selectedIds.filter((id) => id !== action.payload);
       state.focusedId = null;
     },
     clearSelection: (state) => {
@@ -134,7 +132,8 @@ export const selectNodeThunk =
   (dispatch, getState) => {
     const state = getState();
     const node = state.document.doc.nodes[nodeId];
-    if (!node || !MOM.Guard.isRootNode(node)) {
+    const isAlsoSelected = state.selection.selectedIds.length === 1 && state.selection.selectedIds[0] === nodeId;
+    if (!node || !MOM.Guard.isRootNode(node) || isAlsoSelected) {
       return;
     }
     dispatch(selectionStoreActions.selectNode(nodeId));

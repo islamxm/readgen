@@ -4,8 +4,6 @@ import type { MOMAllContent, MOMTextMarks } from "@/mom/types";
 import { useChildren, useCursor, useDocumentActions, useNodeSelection, useSelectionActions } from "@/hooks";
 import { MOM } from "@/mom";
 
-// const globalShortcutsList = Object.entries(GlobalShortcuts);
-
 /**
  * text - если разрешен только сырой текст (ex: h1,h2,...)
  *
@@ -39,20 +37,20 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
       html = MOM.Serializer.momToHTML(children, node.id);
     }
     ref.current.innerHTML = html;
-    if (isFocused) {
-      restoreCursor();
-    }
-  }, [children, parseType, node, isFocused, restoreCursor]);
+  }, [children, parseType, node]);
 
   useEffect(() => {
+    if (!ref.current) return;
     if (isFocused) {
-      ref.current?.focus();
+      ref.current.focus();
+      restoreCursor();
     }
   }, [isFocused, restoreCursor]);
 
   /** сохранение результата редактирования (данные беруться из dom) */
   const save = () => {
     if (!ref.current) return;
+    saveCursor();
     if (parseType === "plain" && "value" in node) {
       const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(ref.current.textContent, node.value);
       if (canSkipUpdate) return;
@@ -65,7 +63,6 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
       const nodes = MOM.Parser.domToMom(ref.current);
 
       const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(MOM.Serializer.momToHTML(children, node.id), MOM.Serializer.momToHTML(nodes, node.id));
-
       if (nodes.length === 0 || canSkipUpdate) return;
       commitInlineEdit({ nodeId: node.id, nodes });
     }
@@ -83,17 +80,17 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
   };
 
   /** обработка действий которые идут через клавишу */
-  const onKeyboardEvent = (e: React.KeyboardEvent) => {
-    shortcut(e.nativeEvent, ["Ctrl", "U"], () => applyFormat("lineThrough"), true);
-    shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true);
-    shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true);
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    shortcut(e.nativeEvent, ["Ctrl", "U"], () => applyFormat("lineThrough"), true, true);
+    shortcut(e.nativeEvent, ["Ctrl", "I"], () => applyFormat("italic"), true, true);
+    shortcut(e.nativeEvent, ["Ctrl", "B"], () => applyFormat("bold"), true, true);
   };
 
   /** чистим от форматирования вставляемый текст */
   const onPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const text = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, text);
+    MOM.Editor.pastePlainText(text);
     save();
   };
 
@@ -102,7 +99,6 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
     saveCursor();
     const result = MOM.Editor.applyFormat(format, children);
     if (!result) return;
-
     const canSkipUpdate = MOM.Editor.shoulSkipUpdateState(
       MOM.Serializer.momToHTML(MOM.Parser.domToMom(ref.current), node.id),
       MOM.Serializer.momToHTML(result.nodes, node.id),
@@ -133,7 +129,10 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
   };
 
   const onFocus = () => {
-    focuseNode(node.id);
+    setTimeout(() => {
+      saveCursor();
+      focuseNode(node.id);
+    }, 0);
   };
 
   /** обработка события beforeinput (оказывается реакт не имплементирует его - onBeforeInput что то другое) */
@@ -151,7 +150,7 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
     suppressContentEditableWarning: true,
     onClick: onSelectBlock,
     onBlur,
-    onKeyDown: onKeyboardEvent,
+    onKeyDown,
     onFocus,
     onPaste,
     onInput,

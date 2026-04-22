@@ -11,7 +11,8 @@ type Props = {
   listNodeId: string;
   createItem: (...args: any[]) => void;
   deleteItem: (...args: any[]) => void;
-  focusItem: (index: number) => void;
+  focusPrevItem: (e: React.KeyboardEvent, index: number) => void;
+  focusNextItem: (e: React.KeyboardEvent, index: number) => void;
 };
 
 export const ListItemNode: FC<Props> = ({
@@ -20,7 +21,8 @@ export const ListItemNode: FC<Props> = ({
   listNodeId,
   createItem,
   deleteItem,
-  focusItem,
+  focusPrevItem,
+  focusNextItem
 }) => {
   const children = useChildren(nodeId);
   const { ref, editorProps, applyFormat } = useListEditor(
@@ -30,7 +32,8 @@ export const ListItemNode: FC<Props> = ({
     index,
     createItem,
     deleteItem,
-    focusItem,
+    focusPrevItem,
+    focusNextItem,
   );
   const node = useNode(nodeId);
   const isValidNode = MOM.Guard.isListItemNode(node);

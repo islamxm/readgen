@@ -21,7 +21,8 @@ export function momToMarkdown(rootOrder: Array<string>, nodes: MOMMap) {
 export function momToHTML(
   nodes: Array<MOMAllContent>,
   parentId: string | null,
-) {
+) { 
+  console.log(nodes);
   return nodes.map((node) => momNodeToHTML(node, parentId)).join("");
 }
 function momNodeToHTML(node: MOMAllContent, parentId: string | null) {

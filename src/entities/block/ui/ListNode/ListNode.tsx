@@ -3,6 +3,7 @@ import { useDocumentActions } from "@/hooks/useDocumentActions";
 import { useChildren, useNode, useNodeSelection, useSelectionActions } from "@/hooks";
 import { MOM } from "@/mom";
 import { ListItemNode } from "../ListItemNode/ListItemNode";
+import { saveStateBeforeExternalUpdate } from "../../lib/saveStateBeforeExternalUpdate";
 
 type Props = {
   nodeId: string;
@@ -17,12 +18,12 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
   const { isSelected, isFocused } = useNodeSelection(nodeId);
   const { focuseNode } = useSelectionActions();
 
-  // useEffect(() => {
-  //   if (isSelected && isFocused && children.length > 0) {
-  //     const lastListItemId = children[children.length - 1].id;
-  //     focuseNode(lastListItemId);
-  //   }
-  // }, [isSelected, isFocused, focuseNode, children]);
+  useEffect(() => {
+    if (isSelected && isFocused && children.length > 0) {
+      const lastListItemId = children[children.length - 1].id;
+      focuseNode(lastListItemId);
+    }
+  }, [isSelected, isFocused, focuseNode, children]);
 
   if (!isValidNode) return null;
 
@@ -30,39 +31,51 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
 
   const Tag = isOrdered ? "ol" : "ul";
 
-  const focusItem = (index: number) => {
-    if (!listRef.current) return;
-    const children = listRef.current.children;
-    if (children.length === 0) return;
-    const targetEl = children.item(index);
-    if (!targetEl) return;
-    if (targetEl instanceof HTMLElement) {
-      targetEl.focus();
-      const range = document.createRange();
-      range.selectNodeContents(targetEl);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel?.removeAllRanges();
-      sel?.addRange(range);
+  const focusPrevItem = (e: React.KeyboardEvent, index: number) => {
+    if (!listRef.current || children.length === 0) return;
+    const canPrev = index !== 0;
+    if (canPrev) {
+      e.stopPropagation();
+      const focusTo = children[index - 1].id;
+      focuseNode(focusTo);
+    }
+  };
+
+  const focusNextItem = (e: React.KeyboardEvent, index: number) => {
+    if (!listRef.current || children.length === 0) return;
+    const canNext = index !== children.length - 1;
+    if (canNext) {
+      e.stopPropagation();
+      const focusTo = children[index + 1].id;
+      focuseNode(focusTo);
     }
   };
 
   const createItem = (index: number) => {
-    insertNode({
-      node: MOM.Engine.createListItem(nodeId),
-      parentId: nodeId,
-      index: index + 1,
+    saveStateBeforeExternalUpdate(() => {
+      const node = MOM.Engine.createListItem(nodeId);
+      insertNode({
+        node,
+        parentId: nodeId,
+        index: index + 1,
+      });
+      setTimeout(() => {
+        focuseNode(node.id);
+      }, 0);
     });
-    requestAnimationFrame(() => focusItem(index + 1));
   };
 
   const deleteItem = (id: string, index: number) => {
-    if (children.length === 1) {
-      removeNode(nodeId);
-      return;
-    }
-    removeNode(id);
-    requestAnimationFrame(() => focusItem(Math.max(0, index - 1)));
+    saveStateBeforeExternalUpdate(() => {
+      if (children.length === 1) {
+        removeNode(nodeId);
+      } else {
+        removeNode(id);
+      }
+      setTimeout(() => {
+        focuseNode(children[Math.max(0, index - 1)].id);
+      }, 0);
+    });
   };
 
   return (
@@ -74,8 +87,9 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
           index={childIndex}
           createItem={() => createItem(childIndex)}
           deleteItem={() => deleteItem(childNode.id, childIndex)}
-          focusItem={focusItem}
           listNodeId={nodeId}
+          focusPrevItem={focusPrevItem}
+          focusNextItem={focusNextItem}
         />
       ))}
     </Tag>
