@@ -1,4 +1,4 @@
-import { shortcut, GlobalShortcuts } from "@/utils";
+import { shortcut, GlobalShortcuts } from "@shared/lib";
 import { useEffect } from "react";
 import { useHistory } from "./useHistory";
 import { useSelectionActions } from "./useSelectionActions";

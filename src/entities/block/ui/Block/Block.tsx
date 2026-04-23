@@ -2,7 +2,7 @@ import classes from "./classes.module.scss";
 import type { FC } from "react";
 import clsx from "clsx";
 import { Button, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from "@shared/ui";
-import { BrushCleaning, Copy, CopyX, Grip, SquareMousePointer, SquareStack } from "lucide-react";
+import { Copy, CopyX, Grip, SquareMousePointer, SquareStack } from "lucide-react";
 import { MOM } from "@/mom";
 import { useNode, useUI } from "@/hooks";
 import { useDocumentActions } from "@/hooks/useDocumentActions";
@@ -16,7 +16,6 @@ type Props = {
   nodeId: string;
 };
 
-/** Топ-левел нода, то что имеет свойства редактирования, этот компонент можно разделить на два, в первом - используем группировку и dnd, во втором - редактирование, так мы правильно декомпозируем и разделим ответственности */
 export const Block: FC<Props> = ({ nodeId }) => {
   const node = useNode(nodeId);
   const { isSelected } = useNodeSelection(nodeId);
@@ -45,7 +44,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
 
   return (
     <ContextMenu onOpenChange={onContextMenuOpened}>
-      <ContextMenuTrigger onClick={() => console.log("test")}>
+      <ContextMenuTrigger>
         <div data-block data-id={nodeId} className={clsx(typeCssClass, classes.wrapper, "flex gap-[5px]")}>
           <div
             onClick={select}
@@ -73,9 +72,9 @@ export const Block: FC<Props> = ({ nodeId }) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>
+        {/* <ContextMenuItem>
           <BrushCleaning /> Clear
-        </ContextMenuItem>
+        </ContextMenuItem> */}
         <ContextMenuItem onClick={() => copyNode(nodeId)}>
           <Copy /> Copy Block
         </ContextMenuItem>

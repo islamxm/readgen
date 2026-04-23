@@ -1,5 +1,5 @@
 import { useRef, type HTMLProps, useEffect } from "react";
-import { shortcut } from "@/utils/shortcut";
+import { shortcut } from "@shared/lib";
 import type { MOMAllContent, MOMTextMarks } from "@/mom/types";
 import { useCursor, useDocumentActions, useNodeSelection, useSelectionActions } from "@/hooks";
 import { MOM } from "@/mom";

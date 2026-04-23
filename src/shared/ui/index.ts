@@ -2,18 +2,8 @@ export { Toggle } from "./toggle";
 export { ToggleGroup } from "./toggle-group";
 export { Separator } from "./separator";
 export { Button } from "./button";
-export {
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipContent,
-} from "./tooltip";
-export {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "./dropdown-menu";
+export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "./tooltip";
+export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./dropdown-menu";
 export {
   Menubar,
   MenubarCheckboxItem,
@@ -60,14 +50,7 @@ export {
 } from "./select";
 export { Toaster } from "./sonner";
 export { Input } from "./input";
-export {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupText,
-  InputGroupInput,
-  InputGroupTextarea,
-} from "./input-group";
+export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupInput, InputGroupTextarea } from "./input-group";
 export { Textarea } from "./textarea";
 export { Label } from "./label";
 export {
@@ -83,11 +66,28 @@ export {
   FieldTitle,
 } from "./field";
 export { Spinner } from "./spinner";
-export {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  tabsListVariants,
-} from "./tabs";
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants } from "./tabs";
 export { Logo } from "./logo";
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
+export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+} from "./command";
