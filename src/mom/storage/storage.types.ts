@@ -1,6 +1,6 @@
 import type { MOMDocument } from "../types";
 
-export type Document = {
+export type MOMDocumentEntity = {
   id: string;
   title: string;
   thumbnail: Blob | null;
@@ -9,4 +9,6 @@ export type Document = {
   isFavorite: boolean;
   isDisabled: boolean;
   isPinned: boolean;
-} & Pick<MOMDocument, "nodes" | "rootOrder">;
+} & MOMDocument;
+
+export type CreateDocumentPayload = Pick<MOMDocumentEntity, "title">;

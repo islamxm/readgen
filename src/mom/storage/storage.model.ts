@@ -1,9 +1,10 @@
 import Dexie, { type Table } from "dexie";
+import type { MOMDocumentEntity } from "./storage.types";
 const DB_VERSION = 1;
 const DB_NAME = "readgen";
 
 class DB extends Dexie {
-  documents!: Table<Document, string>;
+  documents!: Table<MOMDocumentEntity, string>;
   constructor() {
     super(DB_NAME);
 

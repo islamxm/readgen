@@ -1,4 +1,4 @@
-import type { MOMAllContent } from "@/mom/types";
+import type { MOMAllContent, MOMDocument } from "@/mom/types";
 import { useDispatch } from "@/shared/lib";
 import {
   addLinkThunk,
@@ -88,6 +88,10 @@ export function useDocumentActions() {
     dispatch(documentStoreActions.updateRootOrder(order));
   }
 
+  function initiateDocument(doc: MOMDocument, id: string) {
+    dispatch(documentStoreActions.initiateDocument({doc, id}))
+  }
+
   return {
     insertNode,
     insertNodes,
@@ -105,5 +109,6 @@ export function useDocumentActions() {
     createNewBlock,
     deleteSelectedBlocks,
     updateRootOrder,
+    initiateDocument
   };
 }

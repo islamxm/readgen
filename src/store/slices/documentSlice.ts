@@ -11,6 +11,7 @@ type UndoStack = {
 };
 
 type InitialState = {
+  id: string | null;
   doc: MOMDocument;
   history: UndoStack;
   copiedNode: {
@@ -27,6 +28,7 @@ const textNode3 = MOM.Engine.createText(" 3 part", pNode.id);
 pNode.children = [textNode1.id, textNode2.id, textNode3.id];
 
 const initialState: InitialState = {
+  id: null,
   doc: {
     rootOrder: [],
     nodes: {},
@@ -254,6 +256,14 @@ export const documentSlice = createSlice({
       state.doc.nodes = {};
       state.doc.rootOrder = [];
       state.history = { past: [], future: [] };
+      state.copiedNode = null;
+    },
+
+    initiateDocument: (state, action: PayloadAction<{ doc: MOMDocument; id: string }>) => {
+      state.doc = action.payload.doc;
+      state.id = action.payload.id;
+      state.history.future = [];
+      state.history.past = [];
       state.copiedNode = null;
     },
   },

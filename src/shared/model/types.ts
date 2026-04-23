@@ -1,0 +1,1 @@
+export type CommonStatus = "idle" | "loading" | "error" | "success";

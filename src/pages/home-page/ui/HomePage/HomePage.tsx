@@ -1,6 +1,7 @@
 import { AppLayout } from "@/widgets/app-layout";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { DocumentCard } from "../DocumentCard/DocumentCard";
+import { CreateDocumentCard } from "@/features/create-document";
 
 export const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ export const HomePage = () => {
         <h2 className="text-3xl">All Documents</h2>
         {/* doc list */}
         <div className="flex gap-[10px] wrap">
+          <CreateDocumentCard/>
           <DocumentCard />
         </div>
       </div>

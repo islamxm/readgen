@@ -2,6 +2,7 @@ import type { MOMDocument } from "@/mom/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AppThunk } from "../config";
 import { MOM } from "@/mom";
+import { documentStoreActions } from "./documentSlice";
 
 type InitialState = {
   // выбранный блок
@@ -53,6 +54,12 @@ export const selectionSlice = createSlice({
       state.selectedIds = [];
       state.focusedId = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(documentStoreActions.initiateDocument, (state) => {
+      state.focusedId = null;
+      state.selectedIds = [];
+    });
   },
 });
 
