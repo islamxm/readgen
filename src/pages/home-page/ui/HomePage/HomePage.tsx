@@ -11,6 +11,8 @@ export const HomePage = () => {
 
   return (
     <AppLayout>
+      <title>ReadGen | Documents</title>
+      <meta name="description" content="Custom WYSIWYG Markdown Editor" />
       <div className="flex-1 min-h-0 bg-white rounded-lg p-[15px] flex flex-col gap-[15px]">
         <h2 className="text-3xl">All Documents</h2>
         <div className="flex gap-[10px] flex-wrap">

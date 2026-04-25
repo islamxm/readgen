@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import logo from "../../../public/logo.svg";
+import logo from "@shared/assets/logo.svg";
 import clsx from "clsx";
 
 type Props = {
