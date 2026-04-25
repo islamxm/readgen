@@ -24,4 +24,6 @@ export const DocumentThumbnailObserver: FC<Props> = ({ containerRef }) => {
 
     makeThumbnail();
   }, [debDoc, id, containerRef]);
+
+  return null;
 };

@@ -208,7 +208,7 @@ export function useDrag() {
     });
   };
 
-  const endDrag = (e: PointerEvent) => {
+  const endDrag = () => {
     if (!isDragStarted.current) return;
 
     if (dropIndex.current !== originalBlockData.current?.index && dropIndex.current !== -1) {
