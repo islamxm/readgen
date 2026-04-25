@@ -21,7 +21,8 @@ export function useInitDocument() {
     MOM.Storage.getDocument(id)
       .then((res) => {
         if (res) {
-          initiateDocument(res, id);
+          const { groups, nodes, rootOrder } = res;
+          initiateDocument({ groups, nodes, rootOrder }, id);
           setStatus("success");
         } else {
           setStatus("error");

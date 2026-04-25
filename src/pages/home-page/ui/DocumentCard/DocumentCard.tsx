@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import { DocumentCardSkeleton } from "./DocumentCard.skeleton";
 import type { MOMDocumentEntity } from "@/mom/storage/storage.types";
 import dayjs from "dayjs";
@@ -27,6 +27,15 @@ export const DocumentCard: Props = ({ id, title, lastModified, thumbnail, extraA
   const navigate = useNavigate();
   const lastModifiedRelativeDate = getLastModifiedRelativeDate(lastModified);
   const imagePlaceholderWord = !thumbnail && title[0].toUpperCase();
+  const url = thumbnail ? URL.createObjectURL(thumbnail) : null;
+
+  useEffect(() => {
+    return () => {
+      if (url) {
+        URL.revokeObjectURL(url);
+      }
+    };
+  }, [thumbnail, url]);
 
   const goToDocument = () => {
     navigate(`/editor?id=${id}`);
@@ -35,7 +44,7 @@ export const DocumentCard: Props = ({ id, title, lastModified, thumbnail, extraA
   return (
     <div
       onClick={goToDocument}
-      className="group overflow-hidden relative rounded-lg border w-[200px] h-[280px] bg-white cursor-pointer hover:shadow-md transition-all"
+      className="group overflow-hidden relative rounded-lg w-[200px] h-[280px] bg-white cursor-pointer shadow-sm hover:shadow-md transition-all"
     >
       {extraActionsSlot && (
         <div
@@ -45,8 +54,9 @@ export const DocumentCard: Props = ({ id, title, lastModified, thumbnail, extraA
           {extraActionsSlot}
         </div>
       )}
-      <div className="thumbnail aspect-3/3 rounded-lg overflow-hidden">
-        {!thumbnail && <div className="hatching aspect-3/3 flex justify-center items-center text-[100px] text-blue-300">{imagePlaceholderWord}</div>}
+      <div className="thumbnail aspect-3/3 rounded-lg overflow-hidden bg-blue-50 p-[10px] border">
+        {url && <img className="w-full h-full rounded-md object-cover" src={url} alt={title}/>}
+        {!url && <div className="hatching rounded-md aspect-3/3 flex justify-center items-center text-[100px] text-blue-300">{imagePlaceholderWord}</div>}
       </div>
 
       <div className="p-[10px] flex flex-col gap-[5px]">
