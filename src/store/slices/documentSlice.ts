@@ -1,9 +1,10 @@
-import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
+import { createListenerMiddleware, createSlice, isAnyOf, nanoid, type PayloadAction } from "@reduxjs/toolkit";
 import type { MOMAllContent, MOMDocument } from "../../mom/types";
 import { type BatchOp, type EngineResult, type MOMOperation } from "../../mom/engine/engine.types";
 import { MOM } from "../../mom";
-import type { AppThunk } from "../config";
+import type { AppThunk, RootState } from "../config";
 import { selectionStoreActions } from "./selectionSlice";
+import { groupNodes } from "@/mom/engine/engine";
 
 type UndoStack = {
   past: MOMOperation[];
@@ -236,7 +237,6 @@ export const documentSlice = createSlice({
       commitResult(state, { doc: currentDoc, op: batchOp });
     },
 
-    // должен копировать вместе со всеми содержимыми, переписать
     copyNode: (state, action: PayloadAction<InitialState["copiedNode"]>) => {
       state.copiedNode = action.payload;
     },
@@ -262,6 +262,15 @@ export const documentSlice = createSlice({
     initiateDocument: (state, action: PayloadAction<{ doc: MOMDocument; id: string }>) => {
       state.doc = action.payload.doc;
       state.id = action.payload.id;
+      state.history.future = [];
+      state.history.past = [];
+      state.copiedNode = null;
+    },
+    uninitiateDocument: (state) => {
+      state.doc.nodes = {};
+      state.doc.groups = {};
+      state.doc.rootOrder = [];
+      state.id = null;
       state.history.future = [];
       state.history.past = [];
       state.copiedNode = null;
@@ -406,5 +415,37 @@ export const pasteNodeThunk = (): AppThunk => (dispatch, getState) => {
   dispatch(documentStoreActions.insertNodes({ ops: copiedNodes }));
   dispatch(documentStoreActions.copyPasted());
 };
+
+export const documentStorageListener = createListenerMiddleware();
+documentStorageListener.startListening({
+  matcher: isAnyOf(
+    documentSlice.actions.insertNode,
+    documentSlice.actions.insertNodes,
+    documentSlice.actions.removeNode,
+    documentSlice.actions.removeNodes,
+    documentSlice.actions.updateNode,
+    documentSlice.actions.moveNode,
+    documentSlice.actions.groupNodes,
+    documentSlice.actions.ungroupNodes,
+    documentSlice.actions.renameGroup,
+    documentSlice.actions.undo,
+    documentSlice.actions.redo,
+    documentSlice.actions.commitInlineEdit,
+    documentSlice.actions.updateRootOrder,
+    documentSlice.actions.clearDocument,
+  ),
+  effect: async (_, listenerApi) => {
+    listenerApi.cancelActiveListeners();
+    const state = listenerApi.getState() as RootState;
+    const doc = state.document.doc;
+    const id = state.document.id;
+
+    if (!(doc && id)) return;
+    await MOM.Storage.updateDocument(id, {
+      ...doc,
+      lastModified: Date.now(),
+    });
+  },
+});
 
 export const documentStoreActions = documentSlice.actions;

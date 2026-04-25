@@ -89,7 +89,11 @@ export function useDocumentActions() {
   }
 
   function initiateDocument(doc: MOMDocument, id: string) {
-    dispatch(documentStoreActions.initiateDocument({doc, id}))
+    dispatch(documentStoreActions.initiateDocument({ doc, id }));
+  }
+
+  function uninitiateDocument() {
+    dispatch(documentStoreActions.uninitiateDocument());
   }
 
   return {
@@ -109,6 +113,7 @@ export function useDocumentActions() {
     createNewBlock,
     deleteSelectedBlocks,
     updateRootOrder,
-    initiateDocument
+    initiateDocument,
+    uninitiateDocument
   };
 }

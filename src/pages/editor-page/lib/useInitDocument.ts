@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 export function useInitDocument() {
-  const { initiateDocument } = useDocumentActions();
+  const { initiateDocument, uninitiateDocument } = useDocumentActions();
   const [params] = useSearchParams();
   const id = params.get("id");
   const [status, setStatus] = useState<CommonStatus>("idle");
@@ -30,7 +30,11 @@ export function useInitDocument() {
       .catch(() => {
         setStatus("error");
       });
-  }, [id, initiateDocument]);
 
-  return {isSuccess, isLoading, isError};
+    return () => {
+      uninitiateDocument();
+    };
+  }, [id, initiateDocument, uninitiateDocument]);
+
+  return { isSuccess, isLoading, isError };
 }
