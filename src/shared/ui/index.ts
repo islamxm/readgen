@@ -1,7 +1,7 @@
 export { Toggle } from "./toggle";
 export { ToggleGroup } from "./toggle-group";
 export { Separator } from "./separator";
-export { Button } from "./button";
+export { Button, type ButtonProps } from "./button";
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "./tooltip";
 export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./dropdown-menu";
 export {

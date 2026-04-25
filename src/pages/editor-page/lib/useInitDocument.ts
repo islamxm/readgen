@@ -13,7 +13,6 @@ export function useInitDocument() {
   const isLoading = status === "loading";
   const isError = status === "error";
   const isSuccess = status === "success";
-  const isIdle = status === "idle";
 
   useEffect(() => {
     if (!id) {
@@ -33,5 +32,5 @@ export function useInitDocument() {
       });
   }, [id, initiateDocument]);
 
-  return {isSuccess};
+  return {isSuccess, isLoading};
 }

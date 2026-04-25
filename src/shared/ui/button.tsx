@@ -38,19 +38,13 @@ export const buttonVariants = cva(
   },
 );
 
-export function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  children,
-  loading,
-  ...props
-}: React.ComponentProps<"button"> &
+export type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     loading?: boolean;
-  }) {
+  };
+
+export function Button({ className, variant = "default", size = "default", asChild = false, children, loading, ...props }: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button";
 
   const isIcon = !!size?.startsWith("icon");

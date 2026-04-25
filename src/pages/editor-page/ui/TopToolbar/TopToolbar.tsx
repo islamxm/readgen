@@ -1,9 +1,12 @@
 import { FilePlus, Redo2, Undo2 } from "lucide-react";
 import { Button } from "@shared/ui";
-import { useHistory } from "@/hooks";
+import { useHistory, useStorageQuery } from "@/hooks";
 
 import { ExportMarkdownButton } from "@/features/export-markdown";
 import { Menu } from "../Menu/Menu";
+import { CreateDocumentButton } from "@/features/create-document";
+import { DocumentTitle } from "../DocumentTitle/DocumentTitle";
+import { MOM } from "@/mom";
 
 export const TopToolbar = () => {
   const { undo, redo } = useHistory();
@@ -12,10 +15,11 @@ export const TopToolbar = () => {
     <div className="flex p-2 gap-1 justify-between flex-1 bg-white">
       <div className="flex gap-1">
         <div className="flex gap-1">
-          <Button>
+          <DocumentTitle />
+          <CreateDocumentButton>
             <FilePlus />
-            New File
-          </Button>
+            New Document
+          </CreateDocumentButton>
           <Button onClick={undo} size={"icon"}>
             <Undo2 />
           </Button>

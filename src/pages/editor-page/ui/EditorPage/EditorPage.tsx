@@ -6,7 +6,7 @@ import { TopToolbar } from "../TopToolbar/TopToolbar";
 import { AppLayout } from "@/widgets/app-layout";
 
 export const EditorPage = () => {
-  useInitDocument();
+  const {isLoading} = useInitDocument();
 
   return (
     <AppLayout header={<TopToolbar />} sidebar={<EditorToolbar />}>
