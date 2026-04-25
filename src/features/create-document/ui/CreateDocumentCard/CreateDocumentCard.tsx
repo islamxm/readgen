@@ -2,7 +2,6 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { CreateDocumentModal } from "../CreateDocumentModal/CreateDocumentModal";
 
-/** @deprecated */
 export const CreateDocumentCard = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
