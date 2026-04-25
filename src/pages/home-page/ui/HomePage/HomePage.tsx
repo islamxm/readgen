@@ -4,9 +4,10 @@ import { DocumentCard } from "../DocumentCard/DocumentCard";
 import { CreateDocumentCard } from "@features/create-document";
 import { useStorageQuery } from "@/hooks";
 import { getAllDocuments } from "@/mom/storage/storage";
+import { DeleteDocumentIconButton } from "@/features/delete-document";
 
 export const HomePage = () => {
-  const { isLoading, isError, isSuccess, data } = useStorageQuery(getAllDocuments);
+  const { isLoading, data } = useStorageQuery(getAllDocuments, []);
 
   return (
     <AppLayout sidebar={<Sidebar />}>
@@ -26,7 +27,15 @@ export const HomePage = () => {
             <>
               <CreateDocumentCard />
               {data.map((document) => (
-                <DocumentCard {...document} />
+                <DocumentCard
+                  key={document.id}
+                  {...document}
+                  extraActionsSlot={
+                    <>
+                      <DeleteDocumentIconButton id={document.id} />
+                    </>
+                  }
+                />
               ))}
             </>
           )}

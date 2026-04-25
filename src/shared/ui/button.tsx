@@ -53,5 +53,12 @@ export function Button({
   }) {
   const Comp = asChild ? Slot.Root : "button";
 
-  return <Comp data-slot="button" data-variant={variant} data-size={size} className={cn(buttonVariants({ variant, size, className }))} {...props}>{loading && <Spinner/>}{children}</Comp>;
+  const isIcon = !!size?.startsWith("icon");
+
+  return (
+    <Comp data-slot="button" data-variant={variant} data-size={size} className={cn(buttonVariants({ variant, size, className }))} {...props}>
+      {loading && <Spinner />}
+      {isIcon && loading ? null : children}
+    </Comp>
+  );
 }
