@@ -14,3 +14,11 @@
 - **Core:** React 19 (Low-level DOM manipulation), TypeScript.
 - **State Management:** Redux Toolkit (Thunks for complex business logic, distinct Document, Selection and UI slices).
 - **Architecture:** Hybrid FSD / Layered approach; features modular slice-based decomposition with high encapsulation of core business logic and state.
+
+### ⚠️ Key Trade-offs
+
+- **Rendering:** No virtualization (prioritized development speed over handling 10k+ blocks). Performance is optimized for standard document sizes.
+- **Data Ingestion:** Basic raw Markdown import; simplified to ensure stable core functionality within the **1-month development sprint.**
+- **DOM Management:** Destructive DOM synchronization. Used as a reliable "fail-safe" method to ensure UI consistency without complex reconciliation logic.
+- **Structural Constraints:** Core engine lacks native tables/inline code; these are offloaded to **Raw Nodes** (third-party parsing) to keep the core logic lean.
+- **Hierarchy:** Flat block structure. Grouping and nesting were omitted in favor of finalizing the core document orchestration and export system.
