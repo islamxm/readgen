@@ -1,4 +1,4 @@
-import { useDocumentActions, useNodeSelection } from "@/hooks";
+import { useDocumentActions, useNodeSelection, useSelectionActions } from "@/hooks";
 import type { MOMCode } from "@/mom/types";
 import type { TextareaCodeEditorProps } from "@uiw/react-textarea-code-editor";
 import { useEffect, useRef, useState } from "react";
@@ -46,6 +46,7 @@ const LANGUAGE_OPTIONS = [
 export function useCode(node: MOMCode) {
   const { updateNode } = useDocumentActions();
   const { isFocused } = useNodeSelection(node.id);
+  const { blur } = useSelectionActions();
   const [language, setLanguage] = useState<string>((node as any).lang || "javascript");
   const ref = useRef<HTMLTextAreaElement>(null);
   const languageLabel = LANGUAGE_OPTIONS.find((f) => f.value === language)?.label;
@@ -85,6 +86,7 @@ export function useCode(node: MOMCode) {
 
   const onBlur = () => {
     save();
+    blur();
   };
 
   const copyToClipboard = async () => {
@@ -102,7 +104,6 @@ export function useCode(node: MOMCode) {
       ref.current?.focus();
     }
   }, [isFocused]);
-
 
   const fieldProps: TextareaCodeEditorProps = {
     placeholder: "...",

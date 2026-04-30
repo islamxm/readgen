@@ -107,7 +107,7 @@ export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType:
     isBlured.current = false;
     setTimeout(() => {
       saveCursor();
-      focuseNode(node.id);
+      // focuseNode(node.id);
     }, 0);
   };
 
