@@ -42,7 +42,7 @@ export const EmptyDocumentBootstrap = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="w-full h-full flex justify-center items-center gap-[15px] opacity-100 flex-col"
+      className="w-full h-full flex justify-center items-center gap-[15px] opacity-100 flex-col absolute inset-0"
     >
       <span className="text-md text-gray-300">Begin by adding your first block</span>
       <div className="flex flex-col gap-[5px] w-full items-center">
