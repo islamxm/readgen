@@ -22,6 +22,7 @@ import {
   create,
 } from "./engine.fabric";
 
+/** Создание новой ноды и добавление его в обьект документа */
 export function insertNode(opt: { doc: MOMDocument; node: MOMAllContent; parentId: string | null; index: number }): EngineResult {
   const { doc, node, parentId, index } = opt;
 
@@ -56,6 +57,7 @@ export function insertNode(opt: { doc: MOMDocument; node: MOMAllContent; parentI
   return { op, doc: newDoc };
 }
 
+/** Создание нескольких нод и добавление в обьект документа как одна операция */
 export function insertNodes(opt: {
   doc: MOMDocument;
   ops: Array<{
@@ -86,6 +88,7 @@ export function insertNodes(opt: {
   };
 }
 
+/** Удаление ноды из документа */
 export function removeNode(opt: { doc: MOMDocument; nodeId: string }): EngineResult {
   const { doc, nodeId } = opt;
 
@@ -123,6 +126,7 @@ export function removeNode(opt: { doc: MOMDocument; nodeId: string }): EngineRes
   return { op, doc: newDoc };
 }
 
+/** Удаление нескольких нод из документа как одна операция */
 export function removeNodes(opt: { doc: MOMDocument; nodeIds: Array<string> }): EngineResult {
   const { doc, nodeIds } = opt;
   let currentDoc = doc;
@@ -155,6 +159,7 @@ export function removeNodes(opt: { doc: MOMDocument; nodeIds: Array<string> }): 
   };
 }
 
+/** Изменение ноды */
 export function updateNode(opt: { doc: MOMDocument; nodeId: string; patch: Partial<MOMAllContent> }): EngineResult {
   const { doc, nodeId, patch } = opt;
 
@@ -184,6 +189,7 @@ export function updateNode(opt: { doc: MOMDocument; nodeId: string; patch: Parti
   return { op, doc: newDoc };
 }
 
+/** Перемещение ноды */
 export function moveNode(opt: { doc: MOMDocument; nodeId: string; toParentId: string | null; toIndex: number }): EngineResult {
   const { doc, nodeId, toParentId, toIndex } = opt;
 
@@ -243,6 +249,7 @@ export function moveNode(opt: { doc: MOMDocument; nodeId: string; toParentId: st
   return { op, doc: newDoc };
 }
 
+/** @deprecated */
 export function groupNodes(opt: { doc: MOMDocument; nodeIds: string[]; label: string }): EngineResult {
   const { doc, nodeIds, label } = opt;
 
@@ -292,6 +299,7 @@ export function groupNodes(opt: { doc: MOMDocument; nodeIds: string[]; label: st
   return { op, doc: newDoc };
 }
 
+/** @deprecated */
 export function ungroupNodes(opt: { doc: MOMDocument; groupId: string }): EngineResult {
   const { doc, groupId } = opt;
 
@@ -325,6 +333,7 @@ export function ungroupNodes(opt: { doc: MOMDocument; groupId: string }): Engine
   return { op, doc: newDoc };
 }
 
+/** @deprecated */
 export function renameGroup(opt: { doc: MOMDocument; groupId: string; label: string }): EngineResult {
   const { doc, groupId, label } = opt;
 
@@ -349,6 +358,7 @@ export function renameGroup(opt: { doc: MOMDocument; groupId: string; label: str
   return { op, doc: newDoc };
 }
 
+/** Применение операции к документу */
 export function applyOp(opt: { doc: MOMDocument; op: MOMOperation }): MOMDocument {
   const { doc, op } = opt;
 
@@ -410,6 +420,7 @@ export function applyOp(opt: { doc: MOMDocument; op: MOMOperation }): MOMDocumen
   }
 }
 
+/** Отмена операции в документе */
 export function invertOp(op: MOMOperation): MOMOperation {
   switch (op.type) {
     case "insert":

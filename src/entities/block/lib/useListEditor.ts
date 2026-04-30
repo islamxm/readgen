@@ -8,10 +8,10 @@ import { useDebounceCallback } from "usehooks-ts";
 // рассмотреть в будущем фиксирования focusedId конкретного li в сторе для предсказуемого управления кареткой
 /**
  * Инкапсулирует в себя все методы и свойтсва для редактирования элемента списка с **contenteditable** атрибутом
- * @param {string} nodeId ID элемента списка
- * @param {string} listNodeId ID списка
- * @param {Array<MOMAllContent>} children Дети элемента списка
- * @param {number} index Текущий индекс элемента списка
+ * @param nodeId ID элемента списка
+ * @param listNodeId ID списка
+ * @param children Дети элемента списка
+ * @param index Текущий индекс элемента списка
  * @param createItem Создание нового элемента списка
  * @param deleteItem Удаление элемента списка
  * @param focusPrevItem Переход к предыдущему элементу списка

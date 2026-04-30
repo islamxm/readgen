@@ -14,9 +14,9 @@ type ParseType = "deep" | "plain";
 
 /**
  * Инкапсулирует в себя все методы и свойства для редактирования элементов, это то что будет использоваться в топ левел блоках с **contenteditable** атрибутом
- * @param {MOMAllContent} node Редактируемая MOM нода
- * @param {ParseType} parseType Способ парсинга содержимого html элемента в MOM структуру
- * @param {boolean} disableFormatting Отключение форматирование в редактируемой ноде
+ * @param node Редактируемая MOM нода
+ * @param parseType Способ парсинга содержимого html элемента в MOM структуру
+ * @param disableFormatting Отключение форматирование в редактируемой ноде
  */
 export function useEditor<T extends HTMLElement>(node: MOMAllContent, parseType: ParseType = "deep", disableFormatting?: boolean) {
   const children = useChildren(node.id);
