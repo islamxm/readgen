@@ -5,7 +5,7 @@ import { Info, Lightbulb, MessageSquareWarning, OctagonAlert, TriangleAlert } fr
 import { useNode } from "@/hooks";
 import { useEditor } from "../../lib/useEditor";
 import { MOM } from "@/mom";
-import { FormatTextToolbar } from "@features/format-text";
+import { FormatTextTooltip } from "@features/format-text";
 
 const alertVariantOptions: Record<MOMAlert["variant"], { classes: string; title: ReactNode }> = {
   note: {
@@ -65,7 +65,7 @@ export const AlertNode: FC<Props> = ({ nodeId }) => {
 
   return (
     <>
-      <FormatTextToolbar containerRef={ref as any} applyFormat={applyFormat} />
+      <FormatTextTooltip containerRef={ref as any} applyFormat={applyFormat} />
       <span className={clsx("markdown-alert block", classes)}>
         <span className="markdown-alert-title">{title}</span>
         <p ref={ref} {...editorProps} data-id={nodeId} data-type={node.type} data-parent-id={node.parentId ?? ""} data-editable />

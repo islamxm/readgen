@@ -71,7 +71,7 @@ export const CreateBlockTooltip = () => {
           close();
           break;
         }
-        case "Esc":
+        case "Escape":
           setActiveIndex(0);
           close();
       }

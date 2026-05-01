@@ -19,7 +19,6 @@ import { useDebounceCallback } from "@shared/lib";
  */
 export function useListEditor(
   nodeId: string,
-  listNodeId: string,
   children: Array<MOMAllContent>,
   index: number,
   createItem?: any,
@@ -30,7 +29,6 @@ export function useListEditor(
   const { commitInlineEdit } = useDocumentActions();
   const { focuseNode, blur } = useSelectionActions();
   const { isFocused: isListItemFocused } = useNodeSelection(nodeId);
-  // const { isSelected: isListSelected } = useNodeSelection(listNodeId);
   const ref = useRef<HTMLLIElement>(null);
   const { saveCursor, restoreCursor } = useCursor<HTMLLIElement>(ref);
   const isBlured = useRef<boolean>(false);

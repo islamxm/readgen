@@ -1,7 +1,6 @@
 import { useDispatch } from "@shared/lib";
 
-export function useInlineTooltipActions() {
+export function useFormatTextTooltip() {
   const dispatch = useDispatch();
 
-  
 }

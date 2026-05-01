@@ -2,13 +2,12 @@ import { useChildren, useNode } from "@/hooks";
 import { type FC } from "react";
 import { useListEditor } from "../../lib/useListEditor";
 import { MOM } from "@/mom";
-import { FormatTextToolbar } from "@features/format-text";
+import { FormatTextTooltip } from "@features/format-text";
 
 
 type Props = {
   nodeId: string;
   index: number;
-  listNodeId: string;
   createItem: (...args: any[]) => void;
   deleteItem: (...args: any[]) => void;
   focusPrevItem: (e: React.KeyboardEvent, index: number) => void;
@@ -18,7 +17,6 @@ type Props = {
 export const ListItemNode: FC<Props> = ({
   nodeId,
   index,
-  listNodeId,
   createItem,
   deleteItem,
   focusPrevItem,
@@ -27,7 +25,6 @@ export const ListItemNode: FC<Props> = ({
   const children = useChildren(nodeId);
   const { ref, editorProps, applyFormat } = useListEditor(
     nodeId,
-    listNodeId,
     children,
     index,
     createItem,
@@ -42,7 +39,7 @@ export const ListItemNode: FC<Props> = ({
 
   return (
     <>
-      <FormatTextToolbar containerRef={ref as any} applyFormat={applyFormat} />
+      <FormatTextTooltip containerRef={ref as any} applyFormat={applyFormat} />
       <li
         ref={ref}
         {...editorProps}

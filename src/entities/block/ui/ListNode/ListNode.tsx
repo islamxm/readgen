@@ -87,7 +87,6 @@ export const ListNode: FC<Props> = ({ nodeId }) => {
           index={childIndex}
           createItem={() => createItem(childIndex)}
           deleteItem={() => deleteItem(childNode.id, childIndex)}
-          listNodeId={nodeId}
           focusPrevItem={focusPrevItem}
           focusNextItem={focusNextItem}
         />

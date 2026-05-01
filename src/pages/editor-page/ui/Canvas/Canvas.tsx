@@ -5,6 +5,7 @@ import { Block, LinkTooltip } from "@entities/block";
 import { DocumentThumbnailObserver } from "../DocumentThumbnailObserver/DocumentThumbnailObserver";
 import { EmptyDocumentBootstrap } from "../EmptyDocumentBootstrap/EmptyDocumentBootstrap";
 import { CreateBlockTooltip } from "@features/create-block";
+import { CreateEmojiTooltip } from "@/features/create-emoji";
 
 export const Canvas = () => {
   const { rootOrder, id } = useDocument();
@@ -16,8 +17,11 @@ export const Canvas = () => {
 
   return (
     <>
+      {/* тоже надо добавить к inlineTooltips */}
       <LinkTooltip addUrl={addLink} containerRef={ref as any} />
+
       <CreateBlockTooltip />
+      <CreateEmojiTooltip />
       <div ref={ref} className="rounded-lg border h-full flex-1 p-2 pt-[20px] bg-white overflow-auto min-h-0 relative">
         {rootOrder.length === 0 && id && <EmptyDocumentBootstrap />}
         <div ref={containerRef} className="markdown-body pb-[50vh]">

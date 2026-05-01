@@ -1,0 +1,1 @@
+export const CREATE_EMOJI_INLINE_TOOLTIP_ID = "create-emoji-inline-tooltip";

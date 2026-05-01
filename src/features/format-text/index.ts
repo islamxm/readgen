@@ -1,1 +1,1 @@
-export { FormatTextToolbar } from "./ui/FormatTextToolbar/FormatTextToolbar";
+export { FormatTextTooltip } from "./ui/FormatTextTooltip/FormatTextTooltip";

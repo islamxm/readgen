@@ -52,6 +52,7 @@ export function insertNode(opt: { doc: MOMDocument; node: MOMAllContent; parentI
     node,
     parentId,
     index,
+    descendants: {}
   };
 
   return { op, doc: newDoc };

@@ -17,7 +17,7 @@ type Props = {
 };
 
 /** сейчас этот контейнер для каждого блока свой, надо вынести на уровень Canvas */
-export const FormatTextToolbar: FC<Props> = ({
+export const FormatTextTooltip: FC<Props> = ({
   containerRef,
   applyFormat,
 }) => {

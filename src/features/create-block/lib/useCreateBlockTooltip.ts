@@ -3,6 +3,7 @@ import { uiStoreActions } from "@/store/slices/uiSlice";
 import { CREATE_BLOCK_INLINE_TOOLTIP_ID } from "../model/consts";
 import { useRef } from "react";
 
+/** Инкапсуляция логики управления инлайновым тултипом для создания нового блока */
 export function useCreateBlockTooltip() {
   const dispatch = useDispatch();
   const acc = useRef<Array<string>>([]);
