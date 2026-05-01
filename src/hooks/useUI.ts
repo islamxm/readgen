@@ -3,7 +3,7 @@ import { uiStoreActions } from "@/store/slices/uiSlice";
 
 export function useUI() {
   const dispatch = useDispatch();
-  const {blockHighlighting} = useSelector(s => s.ui);
+  const blockHighlighting = useSelector(s => s.ui.blockHighlighting);
 
   function disableBlockHighlighting() {
     dispatch(uiStoreActions.disableBlockHighlighting());

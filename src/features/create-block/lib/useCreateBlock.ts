@@ -15,8 +15,8 @@ export function useCreateBlock() {
     selectAndFocusNode(node.id);
   };
 
-  const createHeading = (depth: MOMHeading["depth"]) => {
-    const node = MOM.Engine.createHeading(depth);
+  const createHeading = (depth?: MOMHeading["depth"]) => {
+    const node = MOM.Engine.createHeading(depth ?? 1);
     insertNode({
       node,
       parentId: null,

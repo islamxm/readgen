@@ -1,4 +1,3 @@
-import { useDocumentActions } from "@/hooks/useDocumentActions";
 import {
   Button,
   DropdownMenu,
@@ -9,8 +8,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@shared/ui";
-import { MOM } from "@/mom";
-import type { MOMAlert, MOMHeading } from "@/mom/types";
 import {
   Heading1,
   Heading2,
@@ -33,7 +30,6 @@ import {
   Braces,
   TextAlignStart,
 } from "lucide-react";
-import { useSelectionActions } from "@/hooks/useSelectionActions";
 import { CompositionMenuButton } from "@/features/create-composition";
 import { useCreateBlock } from "@/features/create-block";
 

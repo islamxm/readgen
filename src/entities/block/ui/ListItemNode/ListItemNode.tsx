@@ -2,7 +2,7 @@ import { useChildren, useNode } from "@/hooks";
 import { type FC } from "react";
 import { useListEditor } from "../../lib/useListEditor";
 import { MOM } from "@/mom";
-import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
+import { FormatTextToolbar } from "@features/format-text";
 
 
 type Props = {
@@ -42,7 +42,7 @@ export const ListItemNode: FC<Props> = ({
 
   return (
     <>
-      <FormatToolbar containerRef={ref as any} applyFormat={applyFormat} />
+      <FormatTextToolbar containerRef={ref as any} applyFormat={applyFormat} />
       <li
         ref={ref}
         {...editorProps}

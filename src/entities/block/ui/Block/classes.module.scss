@@ -18,4 +18,14 @@
       opacity: 1 !important;
     }
   }
+
+  .block {
+    border: 1px dashed;
+  }
+}
+
+.wrapper:not(:hover) {
+  .block {
+    border-color: transparent !important;
+  }
 }

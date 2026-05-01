@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { FormatToolbar } from "../FormatToolbar/FormatToolbar";
+import { FormatTextToolbar } from "@features/format-text";
 import { useNode } from "@/hooks";
 import { useEditor } from "../../lib/useEditor";
 import { MOM } from "@/mom";
@@ -16,7 +16,7 @@ export const BlockquoteNode: FC<Props> = ({ nodeId }) => {
 
   return (
     <>
-      <FormatToolbar containerRef={ref as any} applyFormat={applyFormat} />
+      <FormatTextToolbar containerRef={ref as any} applyFormat={applyFormat} />
       <blockquote
         ref={ref}
         {...editorProps}

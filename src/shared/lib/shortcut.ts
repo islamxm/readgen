@@ -2,11 +2,11 @@ type Combination = readonly [ModCode, ModCode, KeyCode] | readonly [ModCode, Key
 
 /**
  *
- * @param {KeyboardEvent} e - Обьект нативного DOM события keydown
- * @param {Combination} combination - Комбинация нажатых клавиш в виде кортежа
- * @param {(...args:any[]) => void} callback - Функция которая выполнится при выполнении условии
- * @param {boolean} preventDefault - нужно ли сделать e.preventDefault()
- * @param {boolean} stopPropagation - нужно ли остановить всплытие e.stopPropagation()
+ * @param e - Обьект нативного DOM события keydown
+ * @param combination - Комбинация нажатых клавиш в виде кортежа
+ * @param callback - Функция которая выполнится при выполнении условии
+ * @param preventDefault - нужно ли сделать e.preventDefault()
+ * @param stopPropagation - нужно ли остановить всплытие e.stopPropagation()
  */
 export function shortcut(
   e: KeyboardEvent,

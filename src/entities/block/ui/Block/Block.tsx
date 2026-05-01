@@ -49,7 +49,8 @@ export const Block: FC<Props> = ({ nodeId }) => {
           <div
             onClick={select}
             className={clsx(
-              `rounded-sm border border-solid w-full outline-[4px]`,
+              `rounded-sm w-full outline-[4px]`,
+              classes.block,
               !blockHighlighting && classes.highlight_disabled,
               isSelected && classes.selected,
             )}
@@ -58,7 +59,6 @@ export const Block: FC<Props> = ({ nodeId }) => {
                 ? {
                     backgroundColor: bg,
                     borderColor: text,
-                    borderStyle: "solid",
                     outlineColor: isSelected ? border : "transparent",
                   }
                 : { outline: `1px dashed ${text}`, border: "none" }

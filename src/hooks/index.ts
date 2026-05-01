@@ -11,3 +11,5 @@ export { useSelectionActions } from "./useSelectionActions";
 export { useDocumentShortcuts } from "./useDocumentShortcuts";
 export { useEvent } from "./useEvent";
 export { useStorageQuery, useStorageMutation } from "./useStorage";
+export { useInlineTooltip } from "./useInlineTooltip";
+export { useInlineCommands } from "./useInlineCommands";

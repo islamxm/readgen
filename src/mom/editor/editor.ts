@@ -473,6 +473,43 @@ const copyNode = (nodes: MOMMap, node: MOMAllContent) => {
   return result;
 };
 
+function getEmptyCaretRect(range: Range) {
+  const node = range.startContainer;
+  const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
+
+  if (!element) return new DOMRect();
+
+  const rect = element.getBoundingClientRect();
+  const style = getComputedStyle(element);
+
+  const paddingLeft = parseFloat(style.paddingLeft) || 0;
+  const paddingTop = parseFloat(style.paddingTop) || 0;
+  const borderLeft = parseFloat(style.borderLeftWidth) || 0;
+  const borderTop = parseFloat(style.borderTopWidth) || 0;
+
+  let lineHeight = parseFloat(style.lineHeight);
+  if (isNaN(lineHeight)) {
+    const paddingBottom = parseFloat(style.paddingBottom) || 0;
+    const borderBottom = parseFloat(style.borderBottomWidth) || 0;
+    lineHeight = rect.height - (paddingTop + paddingBottom + borderTop + borderBottom);
+  }
+
+  const x = rect.left + paddingLeft + borderLeft;
+  const y = rect.top + paddingTop + borderTop;
+
+  return {
+    width: 0,
+    height: lineHeight,
+    top: y,
+    right: x,
+    bottom: y + lineHeight,
+    left: x,
+    x: x,
+    y: y,
+    toJSON: () => "",
+  } as DOMRect;
+}
+
 export const Editor = {
   applyFormat,
   isNothingSelected,
@@ -484,4 +521,5 @@ export const Editor = {
   pastePlainText,
   setCursorToEnd,
   copyNode,
+  getEmptyCaretRect,
 } as const;
