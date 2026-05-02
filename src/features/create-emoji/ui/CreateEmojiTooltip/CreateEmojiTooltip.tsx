@@ -50,7 +50,7 @@ export const CreateEmojiTooltip = () => {
 
   const insert = (e: EmojiClickData) => {
     const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return;
+    if (!MOM.Editor.hasSelection(selection)) return;
 
     const range = MOM.Editor.getRange(selection);
     range.deleteContents();

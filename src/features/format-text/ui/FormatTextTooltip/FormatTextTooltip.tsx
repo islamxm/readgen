@@ -22,7 +22,7 @@ export const FormatTextTooltip: FC<Props> = ({ containerRef, applyFormat }) => {
   useEffect(() => {
     const handleSelectionChange = () => {
       const selection = window.getSelection();
-      if (!selection || MOM.Editor.isNothingSelected(selection)) {
+      if (!MOM.Editor.hasSelection(selection)) {
         setVisible(false);
         return;
       }

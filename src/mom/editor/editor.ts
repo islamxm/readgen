@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 /** Применить форматирование текста */
 export function applyFormat(format: keyof MOMTextMarks, nodes: Array<MOMAllContent>) {
   const selection = window.getSelection();
-  if (!selection || isNothingSelected(selection)) return;
+  if (!hasSelection(selection)) return;
   const range = getRange(selection);
 
   const rangeSnapshot = {
@@ -138,8 +138,8 @@ function getElementData(element: Element) {
 }
 
 /** если ничего не выделено */
-function isNothingSelected(selection: Selection) {
-  return !selection.rangeCount || selection.isCollapsed;
+function hasSelection(selection?: Selection | null): selection is Selection {
+  return !!selection && !!selection.rangeCount && !selection.isCollapsed;
 }
 
 /** получаем диапазон выделения */
@@ -314,7 +314,7 @@ function resetNativeFormattingExecCommands() {
 /** для сохранения позиции каретки */
 export function saveCursor(element: HTMLElement): CursorPosition | null {
   const selection = window.getSelection();
-  if (!selection || !selection.anchorNode || selection.rangeCount === 0) return null;
+  if (!hasSelection(selection) || !selection.anchorNode) return null;
 
   const inEditableContainer =
     selection.anchorNode.parentElement?.closest("[data-editable]") && selection.focusNode?.parentElement?.closest("[data-editable");
@@ -426,7 +426,7 @@ export function shoulSkipUpdateState(prev: string, current: string) {
 
 export function pastePlainText(text: string) {
   const selection = window.getSelection();
-  if (!selection || !selection.rangeCount) return;
+  if (!hasSelection(selection)) return;
   const range = getRange(selection);
   range.deleteContents();
   const textNode = document.createTextNode(text);
@@ -442,7 +442,7 @@ export function setCursorToEnd(el: HTMLElement) {
   range.selectNodeContents(el);
   range.collapse(false);
   const selection = window.getSelection();
-  if (!selection || !selection.rangeCount) return;
+  if (!hasSelection(selection)) return;
   selection.removeAllRanges();
   selection.addRange(range);
 }
@@ -511,7 +511,7 @@ function getEmptyCaretRect(range: Range) {
 
 export const Editor = {
   applyFormat,
-  isNothingSelected,
+  hasSelection,
   resetNativeFormattingExecCommands,
   saveCursor,
   restoreCursor,
