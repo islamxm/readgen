@@ -11,6 +11,7 @@ import { useSelectionActions } from "@/hooks/useSelectionActions";
 import { getBlockColors } from "../../lib/getBlockColors";
 import type { MOMBlockNodeType } from "@/mom/types";
 import { renderer } from "../../lib/renderer";
+import { getCssClassByNode } from "../../lib/getCssClassByNode";
 
 type Props = {
   nodeId: string;
@@ -35,7 +36,7 @@ export const Block: FC<Props> = ({ nodeId }) => {
     }
   };
 
-  const typeCssClass = MOM.Editor.getCssClassByNode(node);
+  const typeCssClass = getCssClassByNode(node);
 
   const onContextMenuOpened = (opened: boolean) => {
     if (!opened) return;

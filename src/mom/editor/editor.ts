@@ -1,6 +1,6 @@
 import { shallowEqual } from "react-redux";
 import { MOM } from "..";
-import type { MOMAlert, MOMAllContent, MOMMap, MOMText, MOMTextMarks } from "../types";
+import type { MOMAllContent, MOMMap, MOMText, MOMTextMarks } from "../types";
 import type { CursorPosition, SelectionFragment } from "./editor.types";
 import { nanoid } from "nanoid";
 
@@ -137,7 +137,7 @@ function getElementData(element: Element) {
   return { id, type, parentId };
 }
 
-/** если ничего не выделено */
+/** если есть какое то выделение */
 function hasSelection(selection?: Selection | null): selection is Selection {
   return !!selection && !!selection.rangeCount && !selection.isCollapsed;
 }
@@ -149,7 +149,8 @@ function getRange(selection: Selection) {
 
 /** получаем блок в рамках которого можно редактировать */
 function getBlockNode(element: Element) {
-  return element.parentElement;
+  // return element.parentElement;
+  return element.closest("[data-editable]") as HTMLElement;
 }
 
 /** получение фрагментов для корректной модификации элементов */
@@ -173,6 +174,7 @@ function getFragments(range: Range, containedElements: Array<HTMLElement>): Arra
   });
 }
 
+/** На основе фрагментов из выеделенной области собирает мап из текстовых обьектов */
 function buildNodes(opt: {
   fragments: Array<SelectionFragment>;
   format: keyof MOMTextMarks;
@@ -249,7 +251,6 @@ function getExistingNodes(nodes: Array<MOMAllContent>, children: HTMLCollection)
     if (node?.type === "text") {
       result.push(node);
     } else if (id && child.tagName === "SPAN") {
-      // Свежеобёрнутый text node — создаём виртуальную MOM-ноду
       result.push({
         ...MOM.Engine.createText(child.textContent ?? "", parentId ?? ""),
         id,
@@ -311,7 +312,7 @@ function resetNativeFormattingExecCommands() {
   }
 }
 
-/** для сохранения позиции каретки */
+/** Сохранение позиции каретки */
 export function saveCursor(element: HTMLElement): CursorPosition | null {
   const selection = window.getSelection();
   if (!hasSelection(selection) || !selection.anchorNode) return null;
@@ -340,7 +341,7 @@ export function saveCursor(element: HTMLElement): CursorPosition | null {
   return result;
 }
 
-/** для восстановления позиции каретки */
+/** Восстановление позиции каретки */
 export function restoreCursor(element: HTMLElement, position: CursorPosition | null) {
   if (!position) return;
 
@@ -383,47 +384,12 @@ export function restoreCursor(element: HTMLElement, position: CursorPosition | n
   selection.addRange(range);
 }
 
-const alertVariantGfmCssClasses: Record<MOMAlert["variant"], string> = {
-  caution: "markdown-alert-caution",
-  tip: "markdown-alert-tip",
-  important: "markdown-alert-important",
-  warning: "markdown-alert-warning",
-  note: "markdown-alert-note",
-};
-
-export function getCssClassByNode(node: MOMAllContent) {
-  if (node.type === "paragraph") {
-    return "p";
-  }
-  if (node.type === "heading") {
-    return `h${node.depth}`;
-  }
-  if (node.type === "blockquote") {
-    return "blockquote";
-  }
-  if (node.type === "alert") {
-    return `markdown-alert-wrapper ${alertVariantGfmCssClasses[node.variant]}`;
-  }
-  if (node.type === "list" && node.ordered) {
-    return "ol";
-  }
-  if (node.type === "list") {
-    return "ul";
-  }
-  if (node.type === "thematicBreak") {
-    return "hr";
-  }
-  if (node.type === "image") {
-    return "img";
-  }
-  return "";
-}
-
 /** функция для проверки возможности пропуска обнолвения стейта, проверяется состояние DOM в строковом виде с состоянием MOM в строковом виде */
 export function shoulSkipUpdateState(prev: string, current: string) {
   return prev === current;
 }
 
+/** Вставка сырого текста */
 export function pastePlainText(text: string) {
   const selection = window.getSelection();
   if (!hasSelection(selection)) return;
@@ -437,6 +403,7 @@ export function pastePlainText(text: string) {
   selection.addRange(range);
 }
 
+/** Вставка курсора в конец */
 export function setCursorToEnd(el: HTMLElement) {
   const range = document.createRange();
   range.selectNodeContents(el);
@@ -447,6 +414,7 @@ export function setCursorToEnd(el: HTMLElement) {
   selection.addRange(range);
 }
 
+/** Копирование ноды */
 const copyNode = (nodes: MOMMap, node: MOMAllContent) => {
   const newNodes: MOMMap = {};
 
@@ -462,7 +430,6 @@ const copyNode = (nodes: MOMMap, node: MOMAllContent) => {
     };
     newNodes[newNodeId] = newNode;
     if ("children" in originalNode && "children" in newNode) {
-      // newNode.children = originalNode.children.map((childId) => cloneRec(childId, newNodeId)).filter((id) => id !== "");
       originalNode.children.forEach((childId) => cloneRec(childId, newNodeId));
     }
     return newNodeId;
@@ -472,6 +439,7 @@ const copyNode = (nodes: MOMMap, node: MOMAllContent) => {
   return result;
 };
 
+/** Получение позиции каретки в пустом contenteditable */
 function getEmptyCaretRect(range: Range) {
   const node = range.startContainer;
   const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
@@ -515,7 +483,6 @@ export const Editor = {
   resetNativeFormattingExecCommands,
   saveCursor,
   restoreCursor,
-  getCssClassByNode,
   shoulSkipUpdateState,
   pastePlainText,
   setCursorToEnd,
