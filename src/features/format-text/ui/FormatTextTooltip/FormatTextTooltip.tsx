@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type FC,
-  type RefObject,
-} from "react";
+import { useEffect, useState, type FC, type RefObject } from "react";
 import { Bold, Italic, Link, Strikethrough } from "lucide-react";
 import { Button } from "@shared/ui";
 import type { MOMTextMarks } from "@/mom/types";
@@ -17,10 +12,7 @@ type Props = {
 };
 
 /** сейчас этот контейнер для каждого блока свой, надо вынести на уровень Canvas */
-export const FormatTextTooltip: FC<Props> = ({
-  containerRef,
-  applyFormat,
-}) => {
+export const FormatTextTooltip: FC<Props> = ({ containerRef, applyFormat }) => {
   const [visible, setVisible] = useState(false);
   const { refs, floatingStyles, update } = useFloating({
     placement: "top",
@@ -40,7 +32,7 @@ export const FormatTextTooltip: FC<Props> = ({
         return;
       }
 
-      const range = selection.getRangeAt(0);
+      const range = MOM.Editor.getRange(selection);
 
       refs.setReference({
         getBoundingClientRect: () => range.getBoundingClientRect(),
@@ -75,7 +67,6 @@ export const FormatTextTooltip: FC<Props> = ({
     setVisible(false);
   };
 
-
   return (
     <AnimatePresence>
       {visible && (
@@ -86,37 +77,19 @@ export const FormatTextTooltip: FC<Props> = ({
           exit={{ opacity: 0 }}
           ref={refs?.setFloating}
           style={floatingStyles}
-          className={
-            "flex items-center rounded-lg border bg-background shadow-md p-[3px] overflow-hidden"
-          }
+          className={"flex items-center rounded-lg border bg-background shadow-md p-[3px] overflow-hidden"}
           onMouseDown={(e) => e.preventDefault()}
         >
-          <Button
-            size={"icon"}
-            variant={"ghost"}
-            onMouseDown={(e) => onApply(e, "bold")}
-          >
+          <Button size={"icon"} variant={"ghost"} onMouseDown={(e) => onApply(e, "bold")}>
             <Bold />
           </Button>
-          <Button
-            size={"icon"}
-            variant={"ghost"}
-            onMouseDown={(e) => onApply(e, "italic")}
-          >
+          <Button size={"icon"} variant={"ghost"} onMouseDown={(e) => onApply(e, "italic")}>
             <Italic />
           </Button>
-          <Button
-            size={"icon"}
-            variant={"ghost"}
-            onMouseDown={(e) => onApply(e, "lineThrough")}
-          >
+          <Button size={"icon"} variant={"ghost"} onMouseDown={(e) => onApply(e, "lineThrough")}>
             <Strikethrough />
           </Button>
-          <Button
-            size={"icon"}
-            variant={"outline"}
-            onMouseDown={(e) => onApply(e, "link")}
-          >
+          <Button size={"icon"} variant={"outline"} onMouseDown={(e) => onApply(e, "link")}>
             <Link />
           </Button>
         </motion.div>

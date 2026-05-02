@@ -36,7 +36,7 @@ export const CreateBlockTooltip = () => {
     if (isOnlyActive) {
       const selection = window.getSelection();
       if (!selection) return;
-      const range = selection.getRangeAt(0);
+      const range = MOM.Editor.getRange(selection);
 
       refs.setReference({
         getBoundingClientRect: () => {

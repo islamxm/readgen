@@ -4,8 +4,7 @@ import type { MOMAlert, MOMAllContent, MOMMap, MOMText, MOMTextMarks } from "../
 import type { CursorPosition, SelectionFragment } from "./editor.types";
 import { nanoid } from "nanoid";
 
-// есть проблема с обьединением одинаковых нод, из за этого при хаотичном форматировании появлюятся много фрагментов одного и того же
-/** изменение стиля у текстовых нод */
+/** Применить форматирование текста */
 export function applyFormat(format: keyof MOMTextMarks, nodes: Array<MOMAllContent>) {
   const selection = window.getSelection();
   if (!selection || isNothingSelected(selection)) return;
@@ -28,7 +27,6 @@ export function applyFormat(format: keyof MOMTextMarks, nodes: Array<MOMAllConte
 
   const normalizedNodes = normalizeBlockChildren(blockNode, nodes);
 
-  // временное решение (небезопасное) в тех случаях когда программно создается элемент
   if (containedElements.length === 1) {
     const p = containedElements[0].firstChild as Node;
     const sel = window.getSelection();
@@ -60,7 +58,7 @@ export function applyFormat(format: keyof MOMTextMarks, nodes: Array<MOMAllConte
   };
 }
 
-/** для склейки схожих по формату нод и очистки от нод-пустышек */
+/** Для склейки схожих по формату нод и очистки от нод-пустышек */
 function normalizeFormattedNodes(nodes: Array<MOMText>): Array<MOMText> {
   if (nodes.length === 0) return [];
 
@@ -113,6 +111,7 @@ function getRangeContainedElements(range: Range) {
   return Array.from(selectedElements);
 }
 
+/** Оборачиваем сырой текст на span */
 function wrapRawTextNode(textNode: Text, blockNode: HTMLElement): HTMLSpanElement {
   const parentId = blockNode.getAttribute("data-id") ?? "";
   const newMomText = MOM.Engine.createText(textNode.textContent ?? "", parentId);
@@ -322,7 +321,7 @@ export function saveCursor(element: HTMLElement): CursorPosition | null {
 
   if (!inEditableContainer) return null;
 
-  const range = selection.getRangeAt(0);
+  const range = getRange(selection);
 
   const getOffset = (node: Node, offset: number) => {
     const preRange = document.createRange();
@@ -428,7 +427,7 @@ export function shoulSkipUpdateState(prev: string, current: string) {
 export function pastePlainText(text: string) {
   const selection = window.getSelection();
   if (!selection || !selection.rangeCount) return;
-  const range = selection.getRangeAt(0);
+  const range = getRange(selection);
   range.deleteContents();
   const textNode = document.createTextNode(text);
   range.insertNode(textNode);
@@ -522,4 +521,5 @@ export const Editor = {
   setCursorToEnd,
   copyNode,
   getEmptyCaretRect,
+  getRange,
 } as const;

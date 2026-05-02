@@ -19,7 +19,7 @@ export const CreateEmojiTooltip = () => {
     if (isOnlyActive) {
       const selection = window.getSelection();
       if (!selection) return;
-      const range = selection.getRangeAt(0);
+      const range = MOM.Editor.getRange(selection);
 
       refs.setReference({
         getBoundingClientRect: () => {
@@ -52,7 +52,7 @@ export const CreateEmojiTooltip = () => {
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) return;
 
-    const range = selection.getRangeAt(0);
+    const range = MOM.Editor.getRange(selection);
     range.deleteContents();
 
     const textNode = document.createTextNode(e.emoji);
@@ -80,13 +80,7 @@ export const CreateEmojiTooltip = () => {
           style={floatingStyles}
           className={"flex flex-col rounded-lg border bg-background shadow-md p-[3px] overflow-hidden z-50 gap-[5px]"}
         >
-          <EmojiPicker
-            open={isOnlyActive}
-            previewConfig={{ showPreview: false }}
-            searchDisabled
-            skinTonesDisabled
-            onEmojiClick={insert}
-          />
+          <EmojiPicker open={isOnlyActive} previewConfig={{ showPreview: false }} searchDisabled skinTonesDisabled onEmojiClick={insert} />
         </motion.div>
       )}
     </AnimatePresence>
